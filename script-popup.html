@@ -235,17 +235,24 @@
 
                     comment += `\n---\nWygenerowano przez Rainbow Telemarketing Scripts`;
 
-                    // Dodaj komentarz do karty
-                    await t.card('id').get('id').then(function(cardId) {
-                        return t.attach({
-                            url: 'https://mossen79.github.io/rainbow-telemarketing-powerup/',
-                            name: comment
-                        });
+                    // Pobierz ID karty i dodaj komentarz przez REST API
+                    const cardId = await t.card('id').get('id');
+
+                    // Użyj REST API Trello do dodania komentarza
+                    await fetch(`https://api.trello.com/1/cards/${cardId}/actions/comments`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            text: comment
+                        })
                     });
 
                     console.log('Komentarz zapisany w Trello');
                 } catch (error) {
                     console.error('Błąd zapisywania komentarza:', error);
+                    // Nie blokuj UI jeśli zapis się nie udał
                 }
             }
 

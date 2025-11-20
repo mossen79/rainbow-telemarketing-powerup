@@ -17,6 +17,21 @@ TrelloPowerUp.initialize({
             }
         }];
     },
+    'card-detail-badges': function(t, options) {
+        return [{
+            title: 'Skrypt rozmowy',
+            text: 'Rozpocznij rozmowę',
+            icon: 'https://mossen79.github.io/rainbow-telemarketing-powerup/icon-powerup.svg',
+            color: 'blue',
+            callback: function(t) {
+                return t.modal({
+                    url: './script-popup.html',
+                    fullscreen: true,
+                    title: 'Rainbow Telemarketing Scripts'
+                });
+            }
+        }];
+    },
     'show-settings': function (t, options) {
         return t.popup({
             title: 'Ustawienia Skryptów',

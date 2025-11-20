@@ -235,21 +235,34 @@
 
                     comment += `\n---\nWygenerowano przez Rainbow Telemarketing Scripts`;
 
-                    // Pobierz ID karty i dodaj komentarz przez REST API
-                    const cardId = await t.card('id').get('id');
+                    // Pobierz ID karty
+                    const card = await t.card('id');
+                    const cardId = card.id;
 
-                    // Użyj REST API Trello do dodania komentarza
-                    await fetch(`https://api.trello.com/1/cards/${cardId}/actions/comments`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            text: comment
-                        })
+                    // Sprawdź autoryzację
+                    const restApi = t.getRestApi();
+                    const isAuthorized = await restApi.isAuthorized();
+
+                    if (!isAuthorized) {
+                        // Poproś o autoryzację
+                        await restApi.authorize({
+                            scope: 'read,write'
+                        });
+                    }
+
+                    // Pobierz token
+                    const token = await restApi.getToken();
+
+                    // Dodaj komentarz przez Trello REST API
+                    const response = await fetch(`https://api.trello.com/1/cards/${cardId}/actions/comments?text=${encodeURIComponent(comment)}&token=${token}`, {
+                        method: 'POST'
                     });
 
-                    console.log('Komentarz zapisany w Trello');
+                    if (response.ok) {
+                        console.log('Komentarz zapisany w Trello');
+                    } else {
+                        console.error('Błąd zapisu:', response.status);
+                    }
                 } catch (error) {
                     console.error('Błąd zapisywania komentarza:', error);
                     // Nie blokuj UI jeśli zapis się nie udał

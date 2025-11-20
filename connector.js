@@ -7,10 +7,10 @@ TrelloPowerUp.initialize({
             icon: 'https://mossen79.github.io/rainbow-telemarketing-powerup/icon-powerup.svg',
             text: 'Skrypt rozmowy',
             callback: function (t) {
-                return t.popup({
-                    title: 'Rainbow Telemarketing Scripts',
+                return t.modal({
                     url: './script-popup.html',
-                    height: 600
+                    fullscreen: true,
+                    title: 'Rainbow Telemarketing Scripts'
                 });
             }
         }];

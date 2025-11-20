@@ -2,6 +2,8 @@
 // This file should ONLY be loaded on the connector page
 
 TrelloPowerUp.initialize({
+    appKey: '538572f48dd27b2c1be5bc2dcdd12bdc',
+    appName: 'Rainbow Telemarketing Scripts',
     'card-buttons': function (t, options) {
         return [{
             icon: 'https://mossen79.github.io/rainbow-telemarketing-powerup/icon-powerup.svg',
@@ -20,6 +22,16 @@ TrelloPowerUp.initialize({
             title: 'Ustawienia Skryptów',
             url: './settings.html',
             height: 300
+        });
+    },
+    'authorization-status': function(t, options) {
+        return t.getRestApi().isAuthorized();
+    },
+    'show-authorization': function(t, options) {
+        return t.popup({
+            title: 'Autoryzacja Trello',
+            url: './authorize.html',
+            height: 140
         });
     }
 });

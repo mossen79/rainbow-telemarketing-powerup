@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <script src="https://p.trellocdn.com/power-up.min.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            padding: 20px;
+            text-align: center;
+        }
+        button {
+            padding: 12px 24px;
+            font-size: 16px;
+            background: #0079bf;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        button:hover {
+            background: #026aa7;
+        }
+    </style>
+</head>
+<body>
+    <p>Autoryzuj dostęp do Trello, aby zapisywać komentarze automatycznie.</p>
+    <button id="authorize-btn">Autoryzuj</button>
+
+    <script>
+        var t = TrelloPowerUp.iframe();
+
+        document.getElementById('authorize-btn').addEventListener('click', function() {
+            t.getRestApi().authorize({ scope: 'read,write' })
+                .then(function(token) {
+                    console.log('Autoryzacja udana');
+                    t.closePopup();
+                })
+                .catch(function(error) {
+                    console.error('Błąd autoryzacji:', error);
+                    alert('Nie udało się autoryzować. Spróbuj ponownie.');
+                });
+        });
+    </script>
+</body>
+</html>

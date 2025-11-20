@@ -200,18 +200,53 @@
                 });
             }
 
-            showEndScreen(outcome) {
+            async showEndScreen(outcome) {
+                // Zapisz komentarz w Trello
+                await this.saveConversationToTrello(outcome);
+
                 const container = document.getElementById('script-content');
                 container.innerHTML = `
                     <div class="end-screen">
                         <h3>Rozmowa zakończona</h3>
                         <p><strong>Wynik:</strong> ${outcome}</p>
-                        <p>Możesz teraz zaktualizować kartę w Trello i zamknąć to okno.</p>
+                        <p>Przebieg rozmowy został zapisany w komentarzu.</p>
+                        <p>Możesz teraz zamknąć to okno.</p>
                     </div>
                 `;
 
                 this.closeBtn.textContent = 'Zamknij i wróć do Trello';
                 this.backBtn.style.display = 'none';
+            }
+
+            async saveConversationToTrello(outcome) {
+                try {
+                    const history = this.engine.getHistory();
+
+                    // Formatuj historię rozmowy
+                    let comment = `**Przebieg rozmowy - Rainbow Telemarketing**\n\n`;
+                    comment += `**Wynik:** ${outcome}\n\n`;
+                    comment += `**Historia rozmowy:**\n`;
+
+                    history.forEach((item, index) => {
+                        comment += `${index + 1}. **${item.stepName}**\n`;
+                        comment += `   Powiedziałem: "${item.said.substring(0, 100)}${item.said.length > 100 ? '...' : ''}"\n`;
+                        comment += `   Klient odpowiedział: ${item.response}\n\n`;
+                    });
+
+                    comment += `\n---\nWygenerowano przez Rainbow Telemarketing Scripts`;
+
+                    // Dodaj komentarz do karty
+                    await t.card('id').get('id').then(function(cardId) {
+                        return t.attach({
+                            url: 'https://mossen79.github.io/rainbow-telemarketing-powerup/',
+                            name: comment
+                        });
+                    });
+
+                    console.log('Komentarz zapisany w Trello');
+                } catch (error) {
+                    console.error('Błąd zapisywania komentarza:', error);
+                }
             }
 
             showError(message) {

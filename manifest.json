@@ -1,0 +1,23 @@
+{
+  "name": "Rainbow Telemarketing Scripts",
+  "details": "Dynamiczne skrypty rozmów telefonicznych dla zespołu telemarketing",
+  "icon": {
+    "url": "./icon.png"
+  },
+  "author": "Rainbow System",
+  "capabilities": [
+    "card-buttons",
+    "show-settings"
+  ],
+  "connectors": {
+    "iframe": {
+      "url": "./index.html",
+      "height": 500
+    }
+  },
+  "tags": [
+    "telemarketing",
+    "scripts",
+    "sales"
+  ]
+}

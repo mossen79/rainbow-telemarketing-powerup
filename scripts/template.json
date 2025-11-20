@@ -1,0 +1,49 @@
+{
+  "name": "Nazwa kampanii - Template",
+  "description": "Opis skryptu",
+  "version": "1.0",
+  "steps": {
+    "start": {
+      "name": "Powitanie",
+      "say": "Tekst który telemarketerka ma powiedzieć...",
+      "responses": [
+        {
+          "label": "Przycisk odpowiedzi 1",
+          "next": "krok_2"
+        },
+        {
+          "label": "Przycisk odpowiedzi 2",
+          "next": "inny_krok"
+        },
+        {
+          "label": "Koniec rozmowy",
+          "next": null
+        }
+      ]
+    },
+    "krok_2": {
+      "name": "Drugi krok",
+      "say": "Kolejny tekst do powiedzenia...",
+      "responses": [
+        {
+          "label": "Opcja A",
+          "next": "krok_3"
+        },
+        {
+          "label": "Opcja B",
+          "next": "koniec"
+        }
+      ]
+    },
+    "koniec": {
+      "name": "Zakończenie",
+      "say": "Dziękuję, do widzenia!",
+      "responses": [
+        {
+          "label": "✅ ZAKOŃCZ - Umówiono",
+          "next": null
+        }
+      ]
+    }
+  }
+}

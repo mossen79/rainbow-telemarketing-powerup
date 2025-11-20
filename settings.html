@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ustawienia - Rainbow Scripts</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            padding: 20px;
+            background: #f4f5f7;
+        }
+
+        h2 {
+            color: #172b4d;
+            margin-bottom: 20px;
+        }
+
+        .setting-group {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .setting-label {
+            font-weight: 600;
+            color: #5e6c84;
+            margin-bottom: 8px;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #dfe1e6;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .info-box {
+            background: #e4f2ff;
+            border-left: 4px solid #0079bf;
+            padding: 12px;
+            border-radius: 4px;
+            font-size: 13px;
+            color: #172b4d;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <h2>⚙️ Ustawienia Skryptów</h2>
+
+    <div class="setting-group">
+        <div class="setting-label">Domyślna kampania:</div>
+        <select id="default-campaign">
+            <option value="rainbow-odkurzacz">Odkurzacz Rainbow</option>
+            <option value="oze-recruitment">Rekrutacja OZE</option>
+        </select>
+    </div>
+
+    <div class="info-box">
+        ℹ️ <strong>Planowane funkcje:</strong>
+        <br>• Auto-save wyników do Trello
+        <br>• Keyboard shortcuts (1,2,3,4)
+        <br>• Statystyki conversion rate
+        <br>• Audio prompts (text-to-speech)
+    </div>
+
+    <script src="https://p.trellocdn.com/power-up.min.js"></script>
+    <script>
+        var t = TrelloPowerUp.iframe();
+
+        // Placeholder dla przyszłych ustawień
+        document.getElementById('default-campaign').addEventListener('change', function(e) {
+            console.log('Zmieniono domyślną kampanię:', e.target.value);
+            // TODO: Zapisz ustawienie
+        });
+    </script>
+</body>
+</html>

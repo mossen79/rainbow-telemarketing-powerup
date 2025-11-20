@@ -1,0 +1,351 @@
+{
+  "name": "Odkurzacz Rainbow - Umówienie prezentacji",
+  "description": "Skrypt do umówienia darmowej prezentacji odkurzacza Rainbow",
+  "version": "1.0",
+  "steps": {
+    "start": {
+      "name": "Powitanie",
+      "say": "Dzień dobry, nazywam się [TWOJE IMIĘ], dzwonię z firmy Rainbow System.\n\nCzy mogę rozmawiać z Panią/Panem [IMIĘ Z LEADA]?",
+      "responses": [
+        {
+          "label": "Tak, słucham",
+          "next": "intro"
+        },
+        {
+          "label": "To nie ja / Zły numer",
+          "next": "wrong_number"
+        },
+        {
+          "label": "Nie mam czasu teraz",
+          "next": "callback_request"
+        },
+        {
+          "label": "Nie interesuje mnie",
+          "next": "objection_start"
+        }
+      ]
+    },
+    "intro": {
+      "name": "Wprowadzenie",
+      "say": "Dzwonię w sprawie darmowej prezentacji odkurzacza Rainbow System.\n\nCzy słyszała/słyszał Pani/Pan o tej marce?",
+      "responses": [
+        {
+          "label": "Tak, znam Rainbow",
+          "next": "pitch_short"
+        },
+        {
+          "label": "Nie, nie znam",
+          "next": "pitch_full"
+        },
+        {
+          "label": "Mam już Rainbow",
+          "next": "already_has"
+        },
+        {
+          "label": "Nie interesuje mnie",
+          "next": "objection_1"
+        }
+      ]
+    },
+    "pitch_full": {
+      "name": "Pełna prezentacja oferty",
+      "say": "Rainbow to amerykański system czyszczenia z 90-letnią tradycją. Nie jest to zwykły odkurzacz - to profesjonalny system oczyszczania powietrza i czyszczenia całego domu.\n\nPrezentacja jest całkowicie darmowa, trwa około 45 minut i odbywa się w Państwa domu. Pokażemy jak Rainbow czyści dywany, materace, usunie kurz i roztocza.\n\nKiedy mogłabym/mógłbym umówić prezentację?",
+      "responses": [
+        {
+          "label": "Dzisiaj / Jutro",
+          "next": "book_soon"
+        },
+        {
+          "label": "W tym tygodniu",
+          "next": "book_this_week"
+        },
+        {
+          "label": "W weekend",
+          "next": "book_weekend"
+        },
+        {
+          "label": "Muszę pomyśleć",
+          "next": "objection_think"
+        },
+        {
+          "label": "To za drogie",
+          "next": "objection_price"
+        }
+      ]
+    },
+    "pitch_short": {
+      "name": "Krótka prezentacja oferty",
+      "say": "Świetnie! To Pani/Pan wie jaka to solidna marka.\n\nOrganizujemy darmowe prezentacje w domach klientów. Trwa 45 minut, pokażemy wszystkie możliwości Rainbow - czyszczenie dywanów, materaców, usuwanie roztoczy.\n\nKiedy mogłabym/mógłbym umówić prezentację?",
+      "responses": [
+        {
+          "label": "Dzisiaj / Jutro",
+          "next": "book_soon"
+        },
+        {
+          "label": "W tym tygodniu",
+          "next": "book_this_week"
+        },
+        {
+          "label": "W weekend",
+          "next": "book_weekend"
+        },
+        {
+          "label": "Muszę pomyśleć",
+          "next": "objection_think"
+        }
+      ]
+    },
+    "book_soon": {
+      "name": "Umawianie na najbliższe dni",
+      "say": "Doskonale! Mam wolne terminy:\n\n• Dzisiaj wieczorem o 18:00 lub 19:30\n• Jutro rano o 10:00 lub po południu o 16:00\n\nKtóry termin Pani/Panu odpowiada?",
+      "responses": [
+        {
+          "label": "Dzisiaj 18:00",
+          "next": "confirm_booking"
+        },
+        {
+          "label": "Dzisiaj 19:30",
+          "next": "confirm_booking"
+        },
+        {
+          "label": "Jutro 10:00",
+          "next": "confirm_booking"
+        },
+        {
+          "label": "Jutro 16:00",
+          "next": "confirm_booking"
+        },
+        {
+          "label": "Inna godzina",
+          "next": "custom_time"
+        }
+      ]
+    },
+    "book_this_week": {
+      "name": "Umawianie w tym tygodniu",
+      "say": "Świetnie! W tym tygodniu mam dostępne terminy od wtorku do piątku.\n\nKtóry dzień i pora dnia byłyby dla Pani/Pana najwygodniejsze?\n\n(Prezentacje prowadzimy: 10:00, 13:00, 16:00, 18:00, 19:30)",
+      "responses": [
+        {
+          "label": "Wtorek / Środa",
+          "next": "confirm_booking"
+        },
+        {
+          "label": "Czwartek / Piątek",
+          "next": "confirm_booking"
+        },
+        {
+          "label": "Wolę weekend",
+          "next": "book_weekend"
+        }
+      ]
+    },
+    "book_weekend": {
+      "name": "Umawianie na weekend",
+      "say": "Rozumiem, weekend to dobry czas. Mam dostępne terminy:\n\n• Sobota: 10:00, 13:00, 16:00\n• Niedziela: 11:00, 14:00, 17:00\n\nKtóry termin Pani/Panu odpowiada?",
+      "responses": [
+        {
+          "label": "Sobota rano/południe",
+          "next": "confirm_booking"
+        },
+        {
+          "label": "Sobota popołudnie",
+          "next": "confirm_booking"
+        },
+        {
+          "label": "Niedziela",
+          "next": "confirm_booking"
+        }
+      ]
+    },
+    "custom_time": {
+      "name": "Niestandardowy termin",
+      "say": "Oczywiście, dostosujemy się do Państwa.\n\nProszę podać preferowany dzień i godzinę, a ja sprawdzę dostępność prezentera.",
+      "responses": [
+        {
+          "label": "Klient podał termin - zapisz",
+          "next": "confirm_booking"
+        },
+        {
+          "label": "Nie może ustalić teraz",
+          "next": "callback_request"
+        }
+      ]
+    },
+    "confirm_booking": {
+      "name": "Potwierdzenie rezerwacji",
+      "say": "Doskonale! Rezerwuję termin prezentacji Rainbow.\n\nProszę potwierdzić dane kontaktowe:\n• Numer telefonu: [NUMER Z LEADA]\n• Adres: [ZAPYTAJ O ADRES]\n\nPrześlę Pani/Panu SMS z potwierdzeniem i numerem do prezentera.\n\nDo zobaczenia!",
+      "responses": [
+        {
+          "label": "✅ UMÓWIONO - Zapisz w Trello",
+          "next": null
+        }
+      ]
+    },
+    "objection_start": {
+      "name": "Obiekcja na starcie",
+      "say": "Rozumiem. Czy mogę zapytać co konkretnie Pani/Pana nie interesuje - prezentacja czy sam odkurzacz?",
+      "responses": [
+        {
+          "label": "Odkurzacz (za drogi)",
+          "next": "objection_price"
+        },
+        {
+          "label": "Nie mam czasu",
+          "next": "objection_time"
+        },
+        {
+          "label": "Nic mnie nie interesuje",
+          "next": "end_not_interested"
+        }
+      ]
+    },
+    "objection_1": {
+      "name": "Obiekcja po intro",
+      "say": "Rozumiem Pani/Pana wątpliwości. Ale to nie jest spotkanie sprzedażowe - to darmowa prezentacja.\n\nWiele osób po prezentacji jest zaskoczonych możliwościami Rainbow. Nie traci Pani/Pan nic, pokazujemy tylko jak działa.\n\nCzy mogę umówić prezentację?",
+      "responses": [
+        {
+          "label": "OK, umów",
+          "next": "book_this_week"
+        },
+        {
+          "label": "Dalej nie",
+          "next": "objection_final"
+        }
+      ]
+    },
+    "objection_think": {
+      "name": "Muszę pomyśleć",
+      "say": "Oczywiście, rozumiem. To ważna decyzja.\n\nCzy mogę oddzwonić jutro lub pojutrze i umówić prezentację? To nic nie kosztuje, a zobaczy Pani/Pan Rainbow na żywo.",
+      "responses": [
+        {
+          "label": "Tak, proszę oddzwonić",
+          "next": "callback_scheduled"
+        },
+        {
+          "label": "Nie, dziękuję",
+          "next": "end_not_interested"
+        }
+      ]
+    },
+    "objection_price": {
+      "name": "Obiekcja cenowa",
+      "say": "Rozumiem obawy o cenę. Ale prawda jest taka, że Rainbow to inwestycja na 20-30 lat.\n\nOfferujemy też raty 0% i programy leasingowe. Prezentacja jest za darmo - warto zobaczyć co dostaje się za tę cenę.\n\nCzy mogę umówić prezentację?",
+      "responses": [
+        {
+          "label": "OK, umów prezentację",
+          "next": "book_this_week"
+        },
+        {
+          "label": "To i tak za drogo",
+          "next": "end_not_interested"
+        }
+      ]
+    },
+    "objection_time": {
+      "name": "Brak czasu",
+      "say": "Rozumiem, każdy ma teraz mało czasu.\n\nPrezentacja trwa tylko 45 minut i dostosujemy się do Państwa - możemy przyjechać wieczorem, w weekend, kiedy Pani/Panu pasuje.\n\nJaki termin byłby najwygodniejszy?",
+      "responses": [
+        {
+          "label": "OK, umów na weekend",
+          "next": "book_weekend"
+        },
+        {
+          "label": "Dalej nie mam czasu",
+          "next": "callback_request"
+        }
+      ]
+    },
+    "objection_final": {
+      "name": "Ostatnia próba",
+      "say": "Rozumiem. Może po prostu zostawię swój numer - gdyby zmieniła/zmienił Pani/Pan zdanie, proszę zadzwonić.\n\nNumer: 123-456-789\n\nDziękuję za rozmowę!",
+      "responses": [
+        {
+          "label": "❌ NIE ZAINTERESOWANY - Zapisz",
+          "next": null
+        }
+      ]
+    },
+    "already_has": {
+      "name": "Ma już Rainbow",
+      "say": "Wspaniale! To znaczy że zna Pani/Pan jakość Rainbow.\n\nCzy wie Pani/Pan że mamy teraz program wymiany starszych modeli na nowe z rabatem? Nowe modele mają dodatkowe funkcje.\n\nCzy mogę umówić prezentację nowego modelu?",
+      "responses": [
+        {
+          "label": "Tak, interesuje mnie",
+          "next": "book_this_week"
+        },
+        {
+          "label": "Nie, mój działa OK",
+          "next": "end_has_rainbow"
+        }
+      ]
+    },
+    "wrong_number": {
+      "name": "Zły numer",
+      "say": "Rozumiem, przepraszam za pomyłkę.\n\nMiłego dnia!",
+      "responses": [
+        {
+          "label": "❌ ZŁY NUMER - Zapisz",
+          "next": null
+        }
+      ]
+    },
+    "callback_request": {
+      "name": "Prośba o telefon zwrotny",
+      "say": "Oczywiście, rozumiem.\n\nKiedy mogę oddzwonić? Jutro, pojutrze?",
+      "responses": [
+        {
+          "label": "Jutro (podaj godzinę)",
+          "next": "callback_scheduled"
+        },
+        {
+          "label": "Za kilka dni",
+          "next": "callback_scheduled"
+        },
+        {
+          "label": "Ja sam/sama zadzwonię",
+          "next": "end_callback_client"
+        }
+      ]
+    },
+    "callback_scheduled": {
+      "name": "Potwierdzenie oddzwonienia",
+      "say": "Super! Zapisuję i oddzwonię w ustalonym terminie.\n\nDziękuję, do usłyszenia!",
+      "responses": [
+        {
+          "label": "⏰ ODDZWONIĆ - Zapisz w Trello",
+          "next": null
+        }
+      ]
+    },
+    "end_not_interested": {
+      "name": "Koniec - nie zainteresowany",
+      "say": "Rozumiem. Dziękuję za poświęcony czas.\n\nMiłego dnia!",
+      "responses": [
+        {
+          "label": "❌ NIE ZAINTERESOWANY - Zapisz",
+          "next": null
+        }
+      ]
+    },
+    "end_has_rainbow": {
+      "name": "Koniec - ma Rainbow",
+      "say": "Cieszę się że Rainbow Państwu służy!\n\nGdyby w przyszłości potrzebowali Państwo serwisu lub akcesoriów - proszę dzwonić.\n\nMiłego dnia!",
+      "responses": [
+        {
+          "label": "✅ MA JUŻ RAINBOW - Zapisz",
+          "next": null
+        }
+      ]
+    },
+    "end_callback_client": {
+      "name": "Koniec - klient oddzwoni",
+      "say": "Oczywiście! Mój numer: 123-456-789\n\nCzekam na telefon. Miłego dnia!",
+      "responses": [
+        {
+          "label": "📞 KLIENT ODDZWONI - Zapisz",
+          "next": null
+        }
+      ]
+    }
+  }
+}

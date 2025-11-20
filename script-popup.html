@@ -160,13 +160,60 @@
                 this.updateHistory();
             }
 
-            handleResponse(index) {
-                const result = this.engine.selectResponse(index);
+            async handleResponse(index) {
+                const currentStep = this.engine.getCurrentStep();
+                const response = currentStep.responses[index];
 
-                if (result.end) {
-                    this.showEndScreen(result.outcome);
+                // Sprawdź czy to krok z wyborem daty
+                if (response.useCalendar) {
+                    await this.openDatePicker(response);
                 } else {
-                    this.render();
+                    const result = this.engine.selectResponse(index);
+
+                    if (result.end) {
+                        this.showEndScreen(result.outcome);
+                    } else {
+                        this.render();
+                    }
+                }
+            }
+
+            async openDatePicker(response) {
+                try {
+                    const selectedDate = await t.datePicker({
+                        minDate: new Date(),
+                        defaultDate: new Date()
+                    });
+
+                    if (selectedDate) {
+                        // Formatuj datę
+                        const dateStr = new Date(selectedDate).toLocaleDateString('pl-PL', {
+                            weekday: 'long',
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        });
+
+                        // Dodaj do historii z datą
+                        const currentStep = this.engine.getCurrentStep();
+                        this.engine.history.push({
+                            step: this.engine.currentStep,
+                            stepName: currentStep.name || this.engine.currentStep,
+                            said: currentStep.say,
+                            response: `${response.label} (${dateStr})`,
+                            selectedDate: selectedDate
+                        });
+
+                        // Przejdź do następnego kroku
+                        if (response.next) {
+                            this.engine.currentStep = response.next;
+                            this.render();
+                        } else {
+                            this.showEndScreen(response.label);
+                        }
+                    }
+                } catch (error) {
+                    console.error('Błąd kalendarza:', error);
                 }
             }
 

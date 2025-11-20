@@ -97,62 +97,33 @@
     },
     "book_soon": {
       "name": "Umawianie na najbliższe dni",
-      "say": "Doskonale! Mam wolne terminy:\n\n• Dzisiaj wieczorem o 18:00 lub 19:30\n• Jutro rano o 10:00 lub po południu o 16:00\n\nKtóry termin Pani/Panu odpowiada?",
+      "say": "Doskonale! Proszę wybrać dogodny termin z kalendarza.\n\nPrezentacje prowadzimy: 10:00, 13:00, 16:00, 18:00, 19:30",
       "responses": [
         {
-          "label": "Dzisiaj 18:00",
+          "label": "Wybierz termin",
+          "useCalendar": true,
           "next": "confirm_booking"
-        },
-        {
-          "label": "Dzisiaj 19:30",
-          "next": "confirm_booking"
-        },
-        {
-          "label": "Jutro 10:00",
-          "next": "confirm_booking"
-        },
-        {
-          "label": "Jutro 16:00",
-          "next": "confirm_booking"
-        },
-        {
-          "label": "Inna godzina",
-          "next": "custom_time"
         }
       ]
     },
     "book_this_week": {
       "name": "Umawianie w tym tygodniu",
-      "say": "Świetnie! W tym tygodniu mam dostępne terminy od wtorku do piątku.\n\nKtóry dzień i pora dnia byłyby dla Pani/Pana najwygodniejsze?\n\n(Prezentacje prowadzimy: 10:00, 13:00, 16:00, 18:00, 19:30)",
+      "say": "Świetnie! Proszę wybrać dogodny termin z kalendarza.\n\nPrezentacje prowadzimy: 10:00, 13:00, 16:00, 18:00, 19:30",
       "responses": [
         {
-          "label": "Wtorek / Środa",
+          "label": "Wybierz termin",
+          "useCalendar": true,
           "next": "confirm_booking"
-        },
-        {
-          "label": "Czwartek / Piątek",
-          "next": "confirm_booking"
-        },
-        {
-          "label": "Wolę weekend",
-          "next": "book_weekend"
         }
       ]
     },
     "book_weekend": {
       "name": "Umawianie na weekend",
-      "say": "Rozumiem, weekend to dobry czas. Mam dostępne terminy:\n\n• Sobota: 10:00, 13:00, 16:00\n• Niedziela: 11:00, 14:00, 17:00\n\nKtóry termin Pani/Panu odpowiada?",
+      "say": "Rozumiem, weekend to dobry czas. Proszę wybrać dogodny termin z kalendarza.\n\nPrezentacje w weekendy: Sobota (10:00, 13:00, 16:00), Niedziela (11:00, 14:00, 17:00)",
       "responses": [
         {
-          "label": "Sobota rano/południe",
-          "next": "confirm_booking"
-        },
-        {
-          "label": "Sobota popołudnie",
-          "next": "confirm_booking"
-        },
-        {
-          "label": "Niedziela",
+          "label": "Wybierz termin",
+          "useCalendar": true,
           "next": "confirm_booking"
         }
       ]

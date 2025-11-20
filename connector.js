@@ -4,7 +4,7 @@
 TrelloPowerUp.initialize({
     'card-buttons': function (t, options) {
         return [{
-            icon: 'https://mossen79.github.io/rainbow-telemarketing-powerup/icon.svg',
+            icon: 'https://mossen79.github.io/rainbow-telemarketing-powerup/icon-powerup.svg',
             text: 'Skrypt rozmowy',
             callback: function (t) {
                 return t.popup({

@@ -1,46 +1,10 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rainbow Telemarketing Scripts</title>
-    <link rel="stylesheet" href="styles.css">
     <script src="https://p.trellocdn.com/power-up.min.js"></script>
 </head>
 <body>
-    <div id="script-container">
-        <div id="script-header">
-            <h2 id="script-title">📞 Skrypt Rozmowy</h2>
-            <select id="campaign-selector" style="display:none;">
-                <option value="rainbow-odkurzacz">Odkurzacz Rainbow</option>
-                <option value="oze-recruitment">Rekrutacja OZE</option>
-            </select>
-        </div>
-
-        <div id="script-content">
-            <div id="script-text-box">
-                <div class="label">POWIEDZ:</div>
-                <div id="script-text" class="speech-box"></div>
-            </div>
-
-            <div id="responses-section">
-                <div class="label">KLIENT ODPOWIEDZIAŁ:</div>
-                <div id="response-buttons"></div>
-            </div>
-        </div>
-
-        <div id="script-footer">
-            <button id="back-btn" class="secondary-btn" style="display:none;">← Cofnij</button>
-            <button id="close-btn" class="secondary-btn">✕ Zamknij</button>
-        </div>
-
-        <div id="history-panel" style="display:none;">
-            <div class="label">Historia rozmowy:</div>
-            <div id="history-list"></div>
-        </div>
-    </div>
-
-    <script src="script-engine.js"></script>
-    <script src="trello-connector.js"></script>
+    <script src="./connector.js"></script>
 </body>
 </html>

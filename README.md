@@ -4,6 +4,8 @@
 
 Integracja z Trello - jeden przycisk w karcie leada otwiera dynamiczny skrypt rozmowy.
 
+> **🔒 Security Update v1.1.0:** API keys są teraz zabezpieczone w `config.js`. Zobacz [README-SECURITY.md](README-SECURITY.md) dla szczegółów.
+
 ---
 
 ## 🎯 Dla kogo?

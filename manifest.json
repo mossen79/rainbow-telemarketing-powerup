@@ -2,7 +2,7 @@
   "name": "Rainbow Telemarketing Scripts",
   "details": "Dynamiczne skrypty rozmów telefonicznych dla zespołu telemarketing",
   "icon": {
-    "url": "./icon.png"
+    "url": "./icon-powerup.svg"
   },
   "author": "Rainbow System",
   "capabilities": [

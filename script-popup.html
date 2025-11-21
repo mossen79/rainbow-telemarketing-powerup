@@ -1,14 +1,7 @@
-<!DOCTYPE html>
-<html lang="pl">
-<head>
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rainbow Telemarketing Scripts</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://p.trellocdn.com/power-up.min.js"></script>
-    <script src="./config.js"></script>
-    <script src="./trello-actions-config.js"></script>
-    <script src="./trello-automation.js"></script>
 </head>
 <body>
     <div id="script-container">
@@ -16,6 +9,7 @@
             <h2 id="script-title">Skrypt Rozmowy</h2>
         </div>
 
+        <!-- Główna część skryptu (zmienia się dynamicznie) -->
         <div id="script-content">
             <div id="script-text-box">
                 <div class="label">POWIEDZ:</div>
@@ -26,11 +20,12 @@
                 <div class="label">KLIENT ODPOWIEDZIAŁ:</div>
                 <div id="response-buttons" class="response-grid"></div>
             </div>
-            
-            <div id="notes-section">
-                <div class="label">📝 NOTATKI:</div>
-                <textarea id="notes-textarea" class="notes-textarea" placeholder="Wpisz notatki z rozmowy..."></textarea>
-            </div>
+        </div>
+        
+        <!-- Sekcja notatek (STAŁA, nie znika) -->
+        <div id="notes-section">
+            <div class="label">📝 NOTATKI:</div>
+            <textarea id="notes-textarea" class="notes-textarea" placeholder="Wpisz notatki z rozmowy..."></textarea>
         </div>
 
         <div id="script-footer">
@@ -50,12 +45,9 @@
 
     <script>
         var t = TrelloPowerUp.iframe();
-        // Use API key from config.js (loaded above)
-        const APP_KEY = (typeof CONFIG !== 'undefined' && CONFIG.TRELLO_APP_KEY) 
-            ? CONFIG.TRELLO_APP_KEY 
-            : '538572f48dd27b2c1be5bc2dcdd12bdc'; // Fallback for development
-
-        const SCRIPT_DATA = {"name":"Odkurzacz Rainbow - Umówienie prezentacji","description":"Skrypt do umówienia darmowej prezentacji odkurzacza Rainbow","version":"1.0","steps":{"start":{"name":"Powitanie","say":"Dzień dobry, nazywam się [TWOJE IMIĘ], dzwonię z firmy Rainbow System.\n\nCzy mogę rozmawiać z Panią/Panem [IMIĘ Z LEADA]?","responses":[{"label":"Tak, słucham","next":"intro"},{"label":"To nie ja / Zły numer","next":"wrong_number"},{"label":"Nie mam czasu teraz","next":"callback_request"},{"label":"Nie interesuje mnie","next":"objection_start"}]},"intro":{"name":"Wprowadzenie","say":"Dzwonię w sprawie darmowej prezentacji odkurzacza Rainbow System.\n\nCzy słyszała/słyszał Pani/Pan o tej marce?","responses":[{"label":"Tak, znam Rainbow","next":"pitch_short"},{"label":"Nie, nie znam","next":"pitch_full"},{"label":"Mam już Rainbow","next":"already_has"},{"label":"Nie interesuje mnie","next":"objection_1"}]},"pitch_full":{"name":"Pełna prezentacja oferty","say":"Rainbow to amerykański system czyszczenia z 90-letnią tradycją. Nie jest to zwykły odkurzacz - to profesjonalny system oczyszczania powietrza i czyszczenia całego domu.\n\nPrezentacja jest całkowicie darmowa, trwa około 45 minut i odbywa się w Państwa domu. Pokażemy jak Rainbow czyści dywany, materace, usunie kurz i roztocza.\n\nKiedy mogłabym/mógłbym umówić prezentację?","responses":[{"label":"Dzisiaj / Jutro","next":"book_soon"},{"label":"W tym tygodniu","next":"book_this_week"},{"label":"W weekend","next":"book_weekend"},{"label":"Muszę pomyśleć","next":"objection_think"},{"label":"To za drogie","next":"objection_price"}]},"pitch_short":{"name":"Krótka prezentacja oferty","say":"Świetnie! To Pani/Pan wie jaka to solidna marka.\n\nOrganizujemy darmowe prezentacje w domach klientów. Trwa 45 minut, pokażemy wszystkie możliwości Rainbow - czyszczenie dywanów, materaców, usuwanie roztoczy.\n\nKiedy mogłabym/mógłbym umówić prezentację?","responses":[{"label":"Dzisiaj / Jutro","next":"book_soon"},{"label":"W tym tygodniu","next":"book_this_week"},{"label":"W weekend","next":"book_weekend"},{"label":"Muszę pomyśleć","next":"objection_think"}]},"book_soon":{"name":"Umawianie na najbliższe dni","say":"Doskonale! Proszę wybrać dogodny termin z kalendarza.\n\nPrezentacje prowadzimy: 10:00, 13:00, 16:00, 18:00, 19:30","responses":[{"label":"Wybierz termin","useCalendar":true,"next":"confirm_booking"}]},"book_this_week":{"name":"Umawianie w tym tygodniu","say":"Świetnie! Proszę wybrać dogodny termin z kalendarza.\n\nPrezentacje prowadzimy: 10:00, 13:00, 16:00, 18:00, 19:30","responses":[{"label":"Wybierz termin","useCalendar":true,"next":"confirm_booking"}]},"book_weekend":{"name":"Umawianie na weekend","say":"Rozumiem, weekend to dobry czas. Proszę wybrać dogodny termin z kalendarza.\n\nPrezentacje w weekendy: Sobota (10:00, 13:00, 16:00), Niedziela (11:00, 14:00, 17:00)","responses":[{"label":"Wybierz termin","useCalendar":true,"next":"confirm_booking"}]},"custom_time":{"name":"Niestandardowy termin","say":"Oczywiście, dostosujemy się do Państwa.\n\nProszę podać preferowany dzień i godzinę, a ja sprawdzę dostępność prezentera.","responses":[{"label":"Klient podał termin - zapisz","next":"confirm_booking"},{"label":"Nie może ustalić teraz","next":"callback_request"}]},"confirm_booking":{"name":"Potwierdzenie rezerwacji","say":"Doskonale! Rezerwuję termin prezentacji Rainbow.\n\nProszę potwierdzić dane kontaktowe:\n• Numer telefonu: [NUMER Z LEADA]\n• Adres: [ZAPYTAJ O ADRES]\n\nPrześlę Pani/Panu SMS z potwierdzeniem i numerem do prezentera.\n\nDo zobaczenia!","responses":[{"label":"✅ UMÓWIONO - Zapisz w Trello","next":null}]},"objection_start":{"name":"Obiekcja na starcie","say":"Rozumiem. Czy mogę zapytać co konkretnie Pani/Pana nie interesuje - prezentacja czy sam odkurzacz?","responses":[{"label":"Odkurzacz (za drogi)","next":"objection_price"},{"label":"Nie mam czasu","next":"objection_time"},{"label":"Nic mnie nie interesuje","next":"end_not_interested"}]},"objection_1":{"name":"Obiekcja po intro","say":"Rozumiem Pani/Pana wątpliwości. Ale to nie jest spotkanie sprzedażowe - to darmowa prezentacja.\n\nWiele osób po prezentacji jest zaskoczonych możliwościami Rainbow. Nie traci Pani/Pan nic, pokazujemy tylko jak działa.\n\nCzy mogę umówić prezentację?","responses":[{"label":"OK, umów","next":"book_this_week"},{"label":"Dalej nie","next":"objection_final"}]},"objection_think":{"name":"Muszę pomyśleć","say":"Oczywiście, rozumiem. To ważna decyzja.\n\nCzy mogę oddzwonić jutro lub pojutrze i umówić prezentację? To nic nie kosztuje, a zobaczy Pani/Pan Rainbow na żywo.","responses":[{"label":"Tak, proszę oddzwonić","next":"callback_scheduled"},{"label":"Nie, dziękuję","next":"end_not_interested"}]},"objection_price":{"name":"Obiekcja cenowa","say":"Rozumiem obawy o cenę. Ale prawda jest taka, że Rainbow to inwestycja na 20-30 lat.\n\nOfferujemy też raty 0% i programy leasingowe. Prezentacja jest za darmo - warto zobaczyć co dostaje się za tę cenę.\n\nCzy mogę umówić prezentację?","responses":[{"label":"OK, umów prezentację","next":"book_this_week"},{"label":"To i tak za drogo","next":"end_not_interested"}]},"objection_time":{"name":"Brak czasu","say":"Rozumiem, każdy ma teraz mało czasu.\n\nPrezentacja trwa tylko 45 minut i dostosujemy się do Państwa - możemy przyjechać wieczorem, w weekend, kiedy Pani/Panu pasuje.\n\nJaki termin byłby najwygodniejszy?","responses":[{"label":"OK, umów na weekend","next":"book_weekend"},{"label":"Dalej nie mam czasu","next":"callback_request"}]},"objection_final":{"name":"Ostatnia próba","say":"Rozumiem. Może po prostu zostawię swój numer - gdyby zmieniła/zmienił Pani/Pan zdanie, proszę zadzwonić.\n\nNumer: 123-456-789\n\nDziękuję za rozmowę!","responses":[{"label":"❌ NIE ZAINTERESOWANY - Zapisz","next":null}]},"already_has":{"name":"Ma już Rainbow","say":"Wspaniale! To znaczy że zna Pani/Pan jakość Rainbow.\n\nCzy wie Pani/Pan że mamy teraz program wymiany starszych modeli na nowe z rabatem? Nowe modele mają dodatkowe funkcje.\n\nCzy mogę umówić prezentację nowego modelu?","responses":[{"label":"Tak, interesuje mnie","next":"book_this_week"},{"label":"Nie, mój działa OK","next":"end_has_rainbow"}]},"wrong_number":{"name":"Zły numer","say":"Rozumiem, przepraszam za pomyłkę.\n\nMiłego dnia!","responses":[{"label":"❌ ZŁY NUMER - Zapisz","next":null}]},"callback_request":{"name":"Prośba o telefon zwrotny","say":"Oczywiście, rozumiem.\n\nKiedy mogę oddzwonić? Jutro, pojutrze?","responses":[{"label":"Jutro (podaj godzinę)","next":"callback_scheduled"},{"label":"Za kilka dni","next":"callback_scheduled"},{"label":"Ja sam/sama zadzwonię","next":"end_callback_client"}]},"callback_scheduled":{"name":"Potwierdzenie oddzwonienia","say":"Super! Zapisuję i oddzwonię w ustalonym terminie.\n\nDziękuję, do usłyszenia!","responses":[{"label":"⏰ ODDZWONIĆ - Zapisz w Trello","next":null}]},"end_not_interested":{"name":"Koniec - nie zainteresowany","say":"Rozumiem. Dziękuję za poświęcony czas.\n\nMiłego dnia!","responses":[{"label":"❌ NIE ZAINTERESOWANY - Zapisz","next":null}]},"end_has_rainbow":{"name":"Koniec - ma Rainbow","say":"Cieszę się że Rainbow Państwu służy!\n\nGdyby w przyszłości potrzebowali Państwo serwisu lub akcesoriów - proszę dzwonić.\n\nMiłego dnia!","responses":[{"label":"✅ MA JUŻ RAINBOW - Zapisz","next":null}]},"end_callback_client":{"name":"Koniec - klient oddzwoni","say":"Oczywiście! Mój numer: 123-456-789\n\nCzekam na telefon. Miłego dnia!","responses":[{"label":"📞 KLIENT ODDZWONI - Zapisz","next":null}]}}};
+        
+        // PROSTY SKRYPT BEZ AUTOMATYZACJI
+        const SCRIPT_DATA = {"name":"Odkurzacz Rainbow","steps":{"start":{"name":"Powitanie","say":"Dzień dobry, nazywam się [TWOJE IMIĘ], dzwonię z firmy Rainbow System.\n\nCzy mogę rozmawiać z Panią/Panem [IMIĘ Z LEADA]?","responses":[{"label":"Tak, słucham","next":"intro"},{"label":"To nie ja / Zły numer","next":"wrong_number"},{"label":"Nie mam czasu teraz","next":"callback_request"},{"label":"Nie interesuje mnie","next":"objection_start"}]},"intro":{"name":"Wprowadzenie","say":"Dzwonię w sprawie darmowej prezentacji odkurzacza Rainbow System.\n\nCzy słyszała/słyszał Pani/Pan o tej marce?","responses":[{"label":"Tak, znam Rainbow","next":"pitch_short"},{"label":"Nie, nie znam","next":"pitch_full"},{"label":"Mam już Rainbow","next":"already_has"},{"label":"Nie interesuje mnie","next":"objection_1"}]},"pitch_full":{"name":"Pełna prezentacja oferty","say":"Rainbow to amerykański system czyszczenia z 90-letnią tradycją. Nie jest to zwykły odkurzacz - to profesjonalny system oczyszczania powietrza i czyszczenia całego domu.\n\nPrezentacja jest całkowicie darmowa, trwa około 45 minut i odbywa się w Państwa domu. Pokażemy jak Rainbow czyści dywany, materace, usunie kurz i roztocza.\n\nKiedy mogłabym/mógłbym umówić prezentację?","responses":[{"label":"Dzisiaj / Jutro","next":"book_soon"},{"label":"W tym tygodniu","next":"book_this_week"},{"label":"W weekend","next":"book_weekend"},{"label":"Muszę pomyśleć","next":"objection_think"},{"label":"To za drogie","next":"objection_price"}]},"pitch_short":{"name":"Krótka prezentacja oferty","say":"Świetnie! To Pani/Pan wie jaka to solidna marka.\n\nOrganizujemy darmowe prezentacje w domach klientów. Trwa 45 minut, pokażemy wszystkie możliwości Rainbow - czyszczenie dywanów, materaców, usuwanie roztoczy.\n\nKiedy mogłabym/mógłbym umówić prezentację?","responses":[{"label":"Dzisiaj / Jutro","next":"book_soon"},{"label":"W tym tygodniu","next":"book_this_week"},{"label":"W weekend","next":"book_weekend"},{"label":"Muszę pomyśleć","next":"objection_think"}]},"book_soon":{"name":"Umawianie na najbliższe dni","say":"Doskonale! Proszę wybrać dogodny termin z kalendarza.\n\nPrezentacje prowadzimy: 10:00, 13:00, 16:00, 18:00, 19:30","responses":[{"label":"Wybierz termin","useCalendar":true,"next":"confirm_booking"}]},"book_this_week":{"name":"Umawianie w tym tygodniu","say":"Świetnie! Proszę wybrać dogodny termin z kalendarza.\n\nPrezentacje prowadzimy: 10:00, 13:00, 16:00, 18:00, 19:30","responses":[{"label":"Wybierz termin","useCalendar":true,"next":"confirm_booking"}]},"book_weekend":{"name":"Umawianie na weekend","say":"Rozumiem, weekend to dobry czas. Proszę wybrać dogodny termin z kalendarza.\n\nPrezentacje w weekendy: Sobota (10:00, 13:00, 16:00), Niedziela (11:00, 14:00, 17:00)","responses":[{"label":"Wybierz termin","useCalendar":true,"next":"confirm_booking"}]},"custom_time":{"name":"Niestandardowy termin","say":"Oczywiście, dostosujemy się do Państwa.\n\nProszę podać preferowany dzień i godzinę, a ja sprawdzę dostępność prezentera.","responses":[{"label":"Klient podał termin - zapisz","next":"confirm_booking"},{"label":"Nie może ustalić teraz","next":"callback_request"}]},"confirm_booking":{"name":"Potwierdzenie rezerwacji","say":"Doskonale! Rezerwuję termin prezentacji Rainbow.\n\nProszę potwierdzić dane kontaktowe:\n• Numer telefonu: [NUMER Z LEADA]\n• Adres: [ZAPYTAJ O ADRES]\n\nPrześlę Pani/Panu SMS z potwierdzeniem i numerem do prezentera.\n\nDo zobaczenia!","responses":[{"label":"✅ UMÓWIONO","next":null}]},"objection_start":{"name":"Obiekcja na starcie","say":"Rozumiem. Czy mogę zapytać co konkretnie Pani/Pana nie interesuje - prezentacja czy sam odkurzacz?","responses":[{"label":"Odkurzacz (za drogi)","next":"objection_price"},{"label":"Nie mam czasu","next":"objection_time"},{"label":"Nic mnie nie interesuje","next":"end_not_interested"}]},"objection_1":{"name":"Obiekcja po intro","say":"Rozumiem Pani/Pana wątpliwości. Ale to nie jest spotkanie sprzedażowe - to darmowa prezentacja.\n\nWiele osób po prezentacji jest zaskoczonych możliwościami Rainbow. Nie traci Pani/Pan nic, pokazujemy tylko jak działa.\n\nCzy mogę umówić prezentację?","responses":[{"label":"OK, umów","next":"book_this_week"},{"label":"Dalej nie","next":"objection_final"}]},"objection_think":{"name":"Muszę pomyśleć","say":"Oczywiście, rozumiem. To ważna decyzja.\n\nCzy mogę oddzwonić jutro lub pojutrze i umówić prezentację? To nic nie kosztuje, a zobaczy Pani/Pan Rainbow na żywo.","responses":[{"label":"Tak, proszę oddzwonić","next":"callback_scheduled"},{"label":"Nie, dziękuję","next":"end_not_interested"}]},"objection_price":{"name":"Obiekcja cenowa","say":"Rozumiem obawy o cenę. Ale prawda jest taka, że Rainbow to inwestycja na 20-30 lat.\n\nOfferujemy też raty 0% i programy leasingowe. Prezentacja jest za darmo - warto zobaczyć co dostaje się za tę cenę.\n\nCzy mogę umówić prezentację?","responses":[{"label":"OK, umów prezentację","next":"book_this_week"},{"label":"To i tak za drogo","next":"end_not_interested"}]},"objection_time":{"name":"Brak czasu","say":"Rozumiem, każdy ma teraz mało czasu.\n\nPrezentacja trwa tylko 45 minut i dostosujemy się do Państwa - możemy przyjechać wieczorem, w weekend, kiedy Pani/Panu pasuje.\n\nJaki termin byłby najwygodniejszy?","responses":[{"label":"OK, umów na weekend","next":"book_weekend"},{"label":"Dalej nie mam czasu","next":"callback_request"}]},"objection_final":{"name":"Ostatnia próba","say":"Rozumiem. Może po prostu zostawię swój numer - gdyby zmieniła/zmienił Pani/Pan zdanie, proszę zadzwonić.\n\nNumer: 123-456-789\n\nDziękuję za rozmowę!","responses":[{"label":"❌ NIE ZAINTERESOWANY - Zapisz","next":null}]},"already_has":{"name":"Ma już Rainbow","say":"Wspaniale! To znaczy że zna Pani/Pan jakość Rainbow.\n\nCzy wie Pani/Pan że mamy teraz program wymiany starszych modeli na nowe z rabatem? Nowe modele mają dodatkowe funkcje.\n\nCzy mogę umówić prezentację nowego modelu?","responses":[{"label":"Tak, interesuje mnie","next":"book_this_week"},{"label":"Nie, mój działa OK","next":"end_has_rainbow"}]},"wrong_number":{"name":"Zły numer","say":"Rozumiem, przepraszam za pomyłkę.\n\nMiłego dnia!","responses":[{"label":"❌ ZŁY NUMER - Zapisz","next":null}]},"callback_request":{"name":"Prośba o telefon zwrotny","say":"Oczywiście, rozumiem.\n\nKiedy mogę oddzwonić? Jutro, pojutrze?","responses":[{"label":"Jutro (podaj godzinę)","next":"callback_scheduled"},{"label":"Za kilka dni","next":"callback_scheduled"},{"label":"Ja sam/sama zadzwonię","next":"end_callback_client"}]},"callback_scheduled":{"name":"Potwierdzenie oddzwonienia","say":"Super! Zapisuję i oddzwonię w ustalonym terminie.\n\nDziękuję, do usłyszenia!","responses":[{"label":"⏰ ODDZWONIĆ - Zapisz w Trello","next":null}]},"end_not_interested":{"name":"Koniec - nie zainteresowany","say":"Rozumiem. Dziękuję za poświęcony czas.\n\nMiłego dnia!","responses":[{"label":"❌ NIE ZAINTERESOWANY - Zapisz","next":null}]},"end_has_rainbow":{"name":"Koniec - ma Rainbow","say":"Cieszę się że Rainbow Państwu służy!\n\nGdyby w przyszłości potrzebowali Państwo serwisu lub akcesoriów - proszę dzwonić.\n\nMiłego dnia!","responses":[{"label":"✅ MA JUŻ RAINBOW - Zapisz","next":null}]},"end_callback_client":{"name":"Koniec - klient oddzwoni","say":"Oczywiście! Mój numer: 123-456-789\n\nCzekam na telefon. Miłego dnia!","responses":[{"label":"📞 KLIENT ODDZWONI - Zapisz","next":null}]}}};
 
         class ScriptEngine {
             constructor(scriptData) {
@@ -168,108 +160,25 @@
                 this.responseButtons.innerHTML = '';
 
                 step.responses.forEach((response, index) => {
-                    if (response.useCalendar) {
-                        const dateGroup = document.createElement('div');
-                        dateGroup.style.marginTop = '20px';
+                    // ZAWSZE używamy standardowych przycisków, bez kalendarza
+                    const button = document.createElement('button');
+                    button.className = 'response-btn';
+                    button.textContent = response.label;
 
-                        const label = document.createElement('label');
-                        label.textContent = 'Termin prezentacji:';
-                        label.style.display = 'block';
-                        label.style.marginBottom = '10px';
-                        label.style.fontWeight = 'bold';
-
-                        const input = document.createElement('input');
-                        input.type = 'date';
-                        input.className = 'date-input';
-                        input.min = new Date().toISOString().split('T')[0];
-                        input.style.padding = '10px';
-                        input.style.fontSize = '16px';
-                        input.style.width = '100%';
-                        input.style.border = '2px solid #0079bf';
-                        input.style.borderRadius = '4px';
-
-                        const button = document.createElement('button');
-                        button.className = 'response-btn success';
-                        button.textContent = 'Potwierdź termin';
-                        button.style.marginTop = '10px';
-                        button.addEventListener('click', () => {
-                            if (!input.value) {
-                                this.showNotification('Proszę wybrać datę', 'error');
-                                return;
-                            }
-
-                            // Validate date is not in the past
-                            const selectedDate = new Date(input.value);
-                            const today = new Date();
-                            today.setHours(0, 0, 0, 0);
-                            
-                            if (selectedDate < today) {
-                                this.showNotification('Data nie może być w przeszłości', 'error');
-                                return;
-                            }
-
-                            // Validate date is not too far in future (max 3 months)
-                            const maxDate = new Date();
-                            maxDate.setMonth(maxDate.getMonth() + 3);
-                            
-                            if (selectedDate > maxDate) {
-                                this.showNotification('Prosimy wybrać datę w ciągu najbliższych 3 miesięcy', 'warning');
-                                return;
-                            }
-
-                            this.handleDateSelection(input.value, response, index);
-                        });
-
-                        dateGroup.appendChild(label);
-                        dateGroup.appendChild(input);
-                        dateGroup.appendChild(button);
-                        this.responseButtons.appendChild(dateGroup);
-                    } else {
-                        const button = document.createElement('button');
-                        button.className = 'response-btn';
-                        button.textContent = response.label;
-
-                        if (response.label.includes('UMÓWIONO') || response.label.toLowerCase().includes('umówiono')) {
-                            button.classList.add('success');
-                        } else if (response.label.includes('NIE ZAINTERESOWANY') || response.label.includes('ZŁY NUMER')) {
-                            button.classList.add('danger');
-                        } else if (response.label.includes('ODDZWONIĆ') || response.label.toLowerCase().includes('później')) {
-                            button.classList.add('warning');
-                        }
-
-                        button.addEventListener('click', () => this.handleResponse(index));
-                        this.responseButtons.appendChild(button);
+                    if (response.label.includes('UMÓWIONO') || response.label.toLowerCase().includes('umówiono')) {
+                        button.classList.add('success');
+                    } else if (response.label.includes('NIE ZAINTERESOWANY') || response.label.includes('ZŁY NUMER')) {
+                        button.classList.add('danger');
+                    } else if (response.label.includes('ODDZWONIĆ') || response.label.toLowerCase().includes('później')) {
+                        button.classList.add('warning');
                     }
+
+                    button.addEventListener('click', () => this.handleResponse(index));
+                    this.responseButtons.appendChild(button);
                 });
 
                 this.backBtn.style.display = this.engine.history.length > 0 ? 'block' : 'none';
                 this.updateHistory();
-            }
-
-            handleDateSelection(dateValue, response, index) {
-                const selectedDate = new Date(dateValue);
-                const dateStr = selectedDate.toLocaleDateString('pl-PL', {
-                    weekday: 'long',
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                });
-
-                const currentStep = this.engine.getCurrentStep();
-                this.engine.history.push({
-                    step: this.engine.currentStep,
-                    stepName: currentStep.name || this.engine.currentStep,
-                    said: currentStep.say,
-                    response: `${response.label} - ${dateStr}`,
-                    selectedDate: dateValue
-                });
-
-                if (response.next === null) {
-                    this.showEndScreen(response.label);
-                } else {
-                    this.engine.currentStep = response.next;
-                    this.render();
-                }
             }
 
             handleResponse(index) {
@@ -284,15 +193,16 @@
             
             showSimpleEndScreen(outcome) {
                 const container = document.getElementById('script-content');
+                // Czyścimy tylko część skryptową, notatki są poniżej w osobnym divie
                 container.innerHTML = `
                     <div class="end-screen">
                         <h3>✅ Rozmowa zakończona</h3>
                         <p><strong>Wynik:</strong> ${outcome}</p>
-                        <p style="margin-top: 20px;">Możesz teraz skopiować notatki i zamknąć okno.</p>
+                        <p style="margin-top: 20px;">Skopiuj notatki i zamknij okno.</p>
                     </div>
                 `;
                 
-                this.closeBtn.textContent = '✓ Zamknij';
+                this.closeBtn.textContent = '✕ Zamknij';
                 this.backBtn.style.display = 'none';
             }
 
@@ -324,242 +234,6 @@
                     historyItem.textContent = `${index + 1}. ${item.stepName || 'Krok'} -> ${item.response}`;
                     this.historyList.appendChild(historyItem);
                 });
-            }
-
-            async showEndScreen(outcome) {
-                // Sprawdź czy outcome wymaga dodatkowych danych
-                const needsDetails = this.outcomeNeedsDetails(outcome);
-                
-                if (needsDetails) {
-                    this.showDetailsForm(outcome);
-                } else {
-                    // Bezpośrednio zapisz bez formularza
-                    await this.saveAndFinish(outcome, {});
-                }
-            }
-
-            outcomeNeedsDetails(outcome) {
-                // Sprawdź czy outcome wymaga dodatkowych danych (data, adres, etc.)
-                const patterns = {
-                    'UMOWIONO': /um[oó]wiono/i,
-                    'CALLBACK': /oddzwoni[cć]/i,
-                };
-                
-                for (const pattern of Object.values(patterns)) {
-                    if (pattern.test(outcome)) {
-                        return true;
-                    }
-                }
-                
-                return false;
-            }
-
-            showDetailsForm(outcome) {
-                const container = document.getElementById('script-content');
-                const isUmowiono = /um[oó]wiono/i.test(outcome);
-                
-                // Generuj opcje godzin
-                const hours = [];
-                for (let h = 9; h <= 20; h++) {
-                    hours.push(`<option value="${h}:00">${h}:00</option>`);
-                }
-                
-                container.innerHTML = `
-                    <div class="details-form">
-                        <h3>${isUmowiono ? '✅ UMÓWIONO' : '⏰ ODDZWONIĆ'}</h3>
-                        <p style="margin-bottom: 20px;">Uzupełnij szczegóły przed zapisaniem:</p>
-                        
-                        <div class="form-group">
-                            <label class="form-label">📅 Data ${isUmowiono ? 'spotkania' : 'callback'}:</label>
-                            <input type="date" id="details-date" class="form-input" 
-                                   min="${new Date().toISOString().split('T')[0]}" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label">🕐 Godzina:</label>
-                            <select id="details-time" class="form-input" required>
-                                <option value="">-- wybierz --</option>
-                                ${hours.join('')}
-                            </select>
-                        </div>
-                        
-                        ${isUmowiono ? `
-                        <div class="form-group">
-                            <label class="form-label">📍 Adres spotkania:</label>
-                            <textarea id="details-address" class="form-textarea" 
-                                      placeholder="ul. Przykładowa 123&#10;00-000 Warszawa" 
-                                      rows="3"></textarea>
-                        </div>
-                        ` : ''}
-                        
-                        <div class="form-group">
-                            <label class="form-label">🏷️ Etykiety:</label>
-                            <div class="checkbox-group">
-                                <label class="checkbox-label">
-                                    <input type="checkbox" value="6388eba8dc90ef0163c62a73" 
-                                           ${isUmowiono ? 'checked' : ''}>
-                                    <span class="label-badge label-green">✅ Umówione</span>
-                                </label>
-                                <label class="checkbox-label">
-                                    <input type="checkbox" value="63b6d963b75c760443ab712f"
-                                           ${!isUmowiono ? 'checked' : ''}>
-                                    <span class="label-badge label-orange">⏰ W późniejszym terminie</span>
-                                </label>
-                                <label class="checkbox-label">
-                                    <input type="checkbox" value="68889670d8479029195b3fd2">
-                                    <span class="label-badge label-red">📞 Nie odbiera</span>
-                                </label>
-                            </div>
-                        </div>
-                        
-                        <div class="form-actions">
-                            <button id="save-details-btn" class="response-btn success">
-                                💾 Zapisz i zakończ rozmowę
-                            </button>
-                        </div>
-                    </div>
-                `;
-                
-                // Attach event listener
-                document.getElementById('save-details-btn').addEventListener('click', () => {
-                    this.handleDetailsSave(outcome);
-                });
-            }
-
-            async handleDetailsSave(outcome) {
-                const date = document.getElementById('details-date').value;
-                const time = document.getElementById('details-time').value;
-                const address = document.getElementById('details-address')?.value || '';
-                
-                // Walidacja
-                if (!date) {
-                    this.showNotification('Proszę wybrać datę', 'error');
-                    return;
-                }
-                
-                if (!time) {
-                    this.showNotification('Proszę wybrać godzinę', 'error');
-                    return;
-                }
-                
-                // Pobierz zaznaczone etykiety
-                const selectedLabels = Array.from(document.querySelectorAll('.checkbox-group input:checked'))
-                    .map(cb => cb.value);
-                
-                const details = {
-                    date: date,
-                    time: time,
-                    address: address,
-                    labels: selectedLabels
-                };
-                
-                await this.saveAndFinish(outcome, details);
-            }
-
-            async saveAndFinish(outcome, details) {
-                // Pokaż loading state
-                const container = document.getElementById('script-content');
-                container.innerHTML = `
-                    <div class="end-screen">
-                        <h3>⏳ Zapisywanie...</h3>
-                        <p>Aktualizacja karty w Trello...</p>
-                    </div>
-                `;
-
-                // Wykonaj automatyczne akcje w Trello
-                const automationResults = await this.executeAutomation(outcome, details);
-
-                // Pokaż rezultat
-                if (automationResults.success) {
-                    const actionsHtml = this.formatActionsResult(automationResults.actions);
-                    container.innerHTML = `
-                        <div class="end-screen">
-                            <h3>✅ Rozmowa zakończona</h3>
-                            <p><strong>Wynik:</strong> ${outcome}</p>
-                            ${actionsHtml}
-                            <p style="margin-top: 20px;">Możesz teraz zamknąć to okno.</p>
-                        </div>
-                    `;
-                } else {
-                    // Show conversation history if save failed
-                    const history = this.engine.getHistory();
-                    let historyText = history.map((item, idx) => 
-                        `${idx + 1}. ${item.stepName}: ${item.response}`
-                    ).join('\n');
-                    
-                    container.innerHTML = `
-                        <div class="end-screen">
-                            <h3>⚠️ Rozmowa zakończona</h3>
-                            <p><strong>Wynik:</strong> ${outcome}</p>
-                            <p class="warning">Nie udało się zapisać komentarza w Trello.</p>
-                            <p>Proszę skopiować poniższy przebieg rozmowy ręcznie:</p>
-                            <textarea style="width:100%; height:200px; margin:10px 0; padding:10px; font-family:monospace; font-size:12px;" readonly>${historyText}</textarea>
-                            <button onclick="this.previousElementSibling.select();document.execCommand('copy');alert('Skopiowano!');" class="response-btn">📋 Skopiuj</button>
-                        </div>
-                    `;
-                }
-
-                this.closeBtn.textContent = '✓ Zamknij i wróć do Trello';
-                this.backBtn.style.display = 'none';
-            }
-
-            async executeAutomation(outcome, details = {}) {
-                try {
-                    const history = this.engine.getHistory();
-                    
-                    const conversationData = {
-                        history: history,
-                        selectedDate: details.date || null,
-                        selectedTime: details.time || null,
-                        address: details.address || '',
-                        labels: details.labels || []
-                    };
-
-                    // Utwórz instancję automation engine
-                    const automation = new TrelloAutomation(t, TRELLO_ACTIONS_CONFIG, APP_KEY);
-                    
-                    // Wykonaj akcje
-                    const results = await automation.executeOutcomeActions(outcome, conversationData);
-                    
-                    if (results.success) {
-                        this.showNotification('✓ Akcje w Trello wykonane', 'success');
-                    } else {
-                        this.showNotification('⚠️ Niektóre akcje nie powiodły się', 'warning');
-                    }
-
-                    return results;
-
-                } catch (error) {
-                    console.error('Błąd automatyzacji:', error);
-                    this.showNotification('Błąd połączenia z Trello', 'error');
-                    
-                    return {
-                        success: false,
-                        error: error.message,
-                        actions: {},
-                        errors: [{ action: 'general', error: error.message }]
-                    };
-                }
-            }
-
-            formatActionsResult(actions) {
-                let html = '<div style="margin-top: 15px; text-align: left;">';
-                html += '<p><strong>Wykonane akcje:</strong></p>';
-                html += '<ul style="text-align: left; margin-left: 20px;">';
-                
-                if (actions.label) html += '<li>✓ Dodano etykietę</li>';
-                if (actions.dueDate) html += '<li>✓ Ustawiono datę (due date)</li>';
-                if (actions.comment) html += '<li>✓ Dodano komentarz z historią rozmowy</li>';
-                if (actions.move) html += '<li>✓ Przeniesiono kartę na odpowiednią listę</li>';
-                
-                if (Object.keys(actions).length === 0) {
-                    html += '<li>ℹ️ Brak automatycznych akcji dla tego typu zakończenia</li>';
-                }
-                
-                html += '</ul>';
-                html += '</div>';
-                
-                return html;
             }
 
             showNotification(message, type = 'info') {

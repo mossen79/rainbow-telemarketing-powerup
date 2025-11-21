@@ -231,3 +231,4 @@ Po wdrożeniu będziesz mieć:
 **Czas pracy:** ~1 godzina  
 **Linie kodu zmienione:** ~300+
 
+

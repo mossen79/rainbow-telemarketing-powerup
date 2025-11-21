@@ -160,3 +160,4 @@ git push origin main --force
 **Ostatnia aktualizacja:** 2025-11-21  
 **Dotyczy wersji:** 1.0.0 → 1.1.0
 
+

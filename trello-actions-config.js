@@ -1,16 +1,15 @@
 // Trello Actions Configuration
-// Konfiguracja automatycznych akcji po zakończeniu rozmowy
+// WYGENEROWANO AUTOMATYCZNIE: 21.11.2025, 15:45:27
 
 const TRELLO_ACTIONS_CONFIG = {
-    // Mapowanie ID list Trello (musisz wpisać swoje ID!)
-    // Aby znaleźć ID listy: otwórz listę w Trello → dodaj .json do URL
+    // ID list Trello
     LISTS: {
-        'TERMIN_SPOTKANIA': 'WPISZ_ID_LISTY_TERMIN_SPOTKANIA',  // Lista: Termin spotkania
-        'STRACONY_LEAD': 'WPISZ_ID_LISTY_STRACONY_LEAD',        // Lista: Stracony lead
-        'CALLBACK': 'WPISZ_ID_LISTY_CALLBACK'                   // Lista: Do oddzwonienia (opcjonalne)
+        'TERMIN_SPOTKANIA': '69207b05859f00c16109506b',  // Termin spotkania
+        'STRACONY_LEAD': '69207b055b6d7d0fa20f40d3',      // Stracony lead
+        'CALLBACK': '69207b05c7b60b93ccdbed35'               // Do oddzwonienia
     },
 
-    // Mapowanie nazw etykiet (utworzysz je w Trello)
+    // Nazwy etykiet (muszą pasować do Trello!)
     LABELS: {
         'UMOWIONO': 'Umówiono',
         'CALLBACK': 'W innym terminie',
@@ -19,27 +18,24 @@ const TRELLO_ACTIONS_CONFIG = {
         'MA_JUZ': 'Ma już Rainbow'
     },
 
-    // Mapowanie outcome z rozmowy do akcji
+    // Mapowanie outcome do akcji
     OUTCOME_ACTIONS: {
-        // Umówiono prezentację
         'UMÓWIONO': {
             addLabel: 'UMOWIONO',
             moveToList: 'TERMIN_SPOTKANIA',
-            setDueDate: true,           // Ustaw due date na datę spotkania
+            setDueDate: true,
             addComment: true,
             commentPrefix: '✅ UMÓWIONO'
         },
         
-        // Oddzwonić
         'ODDZWONIĆ': {
             addLabel: 'CALLBACK',
-            moveToList: 'CALLBACK',     // Lub zostaw na obecnej liście
-            setDueDate: true,           // Ustaw due date na datę callback
+            moveToList: 'CALLBACK',
+            setDueDate: true,
             addComment: true,
             commentPrefix: '⏰ CALLBACK'
         },
         
-        // Nie zainteresowany
         'NIE ZAINTERESOWANY': {
             addLabel: 'BRAK_ZAINTERESOWANIA',
             moveToList: 'STRACONY_LEAD',
@@ -47,7 +43,6 @@ const TRELLO_ACTIONS_CONFIG = {
             commentPrefix: '❌ NIE ZAINTERESOWANY'
         },
         
-        // Zły numer
         'ZŁY NUMER': {
             addLabel: 'ZLY_NUMER',
             moveToList: 'STRACONY_LEAD',
@@ -55,15 +50,13 @@ const TRELLO_ACTIONS_CONFIG = {
             commentPrefix: '❌ ZŁY NUMER'
         },
         
-        // Ma już Rainbow
         'MA JUŻ RAINBOW': {
             addLabel: 'MA_JUZ',
-            moveToList: 'STRACONY_LEAD', // Lub inna lista
+            moveToList: 'STRACONY_LEAD',
             addComment: true,
             commentPrefix: '✅ MA JUŻ RAINBOW'
         },
         
-        // Klient oddzwoni
         'KLIENT ODDZWONI': {
             addLabel: 'CALLBACK',
             addComment: true,
@@ -73,20 +66,15 @@ const TRELLO_ACTIONS_CONFIG = {
 
     // Feature flags
     FEATURES: {
-        AUTO_MOVE_CARDS: true,          // Automatyczne przenoszenie kart
-        AUTO_ADD_LABELS: true,          // Automatyczne dodawanie etykiet
-        AUTO_SET_DUE_DATE: true,        // Automatyczne ustawianie due date
-        ADD_CONVERSATION_COMMENT: true  // Dodawanie komentarza z historią rozmowy
+        AUTO_MOVE_CARDS: true,
+        AUTO_ADD_LABELS: true,
+        AUTO_SET_DUE_DATE: true,
+        ADD_CONVERSATION_COMMENT: true
     }
 };
 
-// Helper function: Wyciągnij outcome type z labela
+// Helper function
 function getOutcomeType(outcomeLabel) {
-    // Przykłady labelek:
-    // "✅ UMÓWIONO - Zapisz w Trello" → "UMÓWIONO"
-    // "❌ NIE ZAINTERESOWANY - Zapisz" → "NIE ZAINTERESOWANY"
-    // "⏰ ODDZWONIĆ - Zapisz w Trello" → "ODDZWONIĆ"
-    
     const patterns = {
         'UMÓWIONO': /um[oó]wiono/i,
         'ODDZWONIĆ': /oddzwoni[cć]/i,
@@ -109,4 +97,3 @@ function getOutcomeType(outcomeLabel) {
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = { TRELLO_ACTIONS_CONFIG, getOutcomeType };
 }
-

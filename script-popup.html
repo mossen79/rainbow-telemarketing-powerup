@@ -19,17 +19,23 @@
         <div id="script-content">
             <div id="script-text-box">
                 <div class="label">POWIEDZ:</div>
-                <div id="script-text" class="speech-box"></div>
+                <div id="script-text" class="speech-box-large"></div>
             </div>
 
             <div id="responses-section">
                 <div class="label">KLIENT ODPOWIEDZIAŁ:</div>
-                <div id="response-buttons"></div>
+                <div id="response-buttons" class="response-grid"></div>
+            </div>
+            
+            <div id="notes-section">
+                <div class="label">📝 NOTATKI:</div>
+                <textarea id="notes-textarea" class="notes-textarea" placeholder="Wpisz notatki z rozmowy..."></textarea>
             </div>
         </div>
 
         <div id="script-footer">
             <button id="back-btn" class="secondary-btn" style="display:none;">← Cofnij</button>
+            <button id="copy-notes-btn" class="secondary-btn success">📋 Skopiuj notatki</button>
             <button id="close-btn" class="secondary-btn">✕ Zamknij</button>
         </div>
 
@@ -132,6 +138,22 @@
             attachEventListeners() {
                 this.backBtn.addEventListener('click', () => this.handleBack());
                 this.closeBtn.addEventListener('click', () => this.handleClose());
+                
+                const copyBtn = document.getElementById('copy-notes-btn');
+                if (copyBtn) {
+                    copyBtn.addEventListener('click', () => this.handleCopyNotes());
+                }
+            }
+            
+            handleCopyNotes() {
+                const notesTextarea = document.getElementById('notes-textarea');
+                if (notesTextarea && notesTextarea.value.trim()) {
+                    notesTextarea.select();
+                    document.execCommand('copy');
+                    this.showNotification('✓ Notatki skopiowane do schowka', 'success');
+                } else {
+                    this.showNotification('Brak notatek do skopiowania', 'warning');
+                }
             }
 
             render() {
@@ -254,10 +276,24 @@
                 const result = this.engine.selectResponse(index);
 
                 if (result.end) {
-                    this.showEndScreen(result.outcome);
+                    this.showSimpleEndScreen(result.outcome);
                 } else {
                     this.render();
                 }
+            }
+            
+            showSimpleEndScreen(outcome) {
+                const container = document.getElementById('script-content');
+                container.innerHTML = `
+                    <div class="end-screen">
+                        <h3>✅ Rozmowa zakończona</h3>
+                        <p><strong>Wynik:</strong> ${outcome}</p>
+                        <p style="margin-top: 20px;">Możesz teraz skopiować notatki i zamknąć okno.</p>
+                    </div>
+                `;
+                
+                this.closeBtn.textContent = '✓ Zamknij';
+                this.backBtn.style.display = 'none';
             }
 
             handleBack() {

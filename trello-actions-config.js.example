@@ -1,0 +1,114 @@
+// Trello Actions Configuration - EXAMPLE
+// Skopiuj ten plik do trello-actions-config.js i wpisz swoje wartości
+
+const TRELLO_ACTIONS_CONFIG = {
+    // Mapowanie ID list Trello
+    // Aby znaleźć ID listy: 
+    // 1. Otwórz Trello w przeglądarce
+    // 2. Kliknij nazwę listy
+    // 3. Dodaj .json do URL (np. https://trello.com/b/ABC123.json)
+    // 4. Szukaj (Ctrl+F): nazwa twojej listy
+    // 5. Skopiuj "id" z tej sekcji
+    
+    LISTS: {
+        'TERMIN_SPOTKANIA': 'WPISZ_TUTAJ_ID_LISTY_TERMIN_SPOTKANIA',
+        'STRACONY_LEAD': 'WPISZ_TUTAJ_ID_LISTY_STRACONY_LEAD',
+        'CALLBACK': 'WPISZ_TUTAJ_ID_LISTY_DO_ODDZWONIENIA'
+    },
+
+    // Mapowanie nazw etykiet
+    // WAŻNE: Nazwy muszą być dokładnie takie same jak w Trello!
+    // (wielkość liter ma znaczenie)
+    
+    LABELS: {
+        'UMOWIONO': 'Umówiono',
+        'CALLBACK': 'W innym terminie',
+        'BRAK_ZAINTERESOWANIA': 'Brak zainteresowania',
+        'ZLY_NUMER': 'Zły numer',
+        'MA_JUZ': 'Ma już Rainbow'
+    },
+
+    // Mapowanie outcome z rozmowy do akcji
+    // NIE ZMIENIAJ tych kluczy (UMÓWIONO, ODDZWONIĆ, etc.)
+    // Możesz edytować co się dzieje dla każdego outcome
+    
+    OUTCOME_ACTIONS: {
+        'UMÓWIONO': {
+            addLabel: 'UMOWIONO',              // Dodaj etykietę
+            moveToList: 'TERMIN_SPOTKANIA',    // Przenieś na listę
+            setDueDate: true,                  // Ustaw due date
+            addComment: true,                  // Dodaj komentarz
+            commentPrefix: '✅ UMÓWIONO'
+        },
+        
+        'ODDZWONIĆ': {
+            addLabel: 'CALLBACK',
+            moveToList: 'CALLBACK',
+            setDueDate: true,
+            addComment: true,
+            commentPrefix: '⏰ CALLBACK'
+        },
+        
+        'NIE ZAINTERESOWANY': {
+            addLabel: 'BRAK_ZAINTERESOWANIA',
+            moveToList: 'STRACONY_LEAD',
+            addComment: true,
+            commentPrefix: '❌ NIE ZAINTERESOWANY'
+        },
+        
+        'ZŁY NUMER': {
+            addLabel: 'ZLY_NUMER',
+            moveToList: 'STRACONY_LEAD',
+            addComment: true,
+            commentPrefix: '❌ ZŁY NUMER'
+        },
+        
+        'MA JUŻ RAINBOW': {
+            addLabel: 'MA_JUZ',
+            moveToList: 'STRACONY_LEAD',  // Możesz zmienić na inną listę
+            addComment: true,
+            commentPrefix: '✅ MA JUŻ RAINBOW'
+        },
+        
+        'KLIENT ODDZWONI': {
+            addLabel: 'CALLBACK',
+            // Brak moveToList - karta zostaje na obecnej liście
+            addComment: true,
+            commentPrefix: '📞 KLIENT ODDZWONI'
+        }
+    },
+
+    // Feature flags - włącz/wyłącz poszczególne funkcje
+    FEATURES: {
+        AUTO_MOVE_CARDS: true,          // Automatycznie przenoś karty
+        AUTO_ADD_LABELS: true,          // Automatycznie dodawaj etykiety
+        AUTO_SET_DUE_DATE: true,        // Automatycznie ustaw due date
+        ADD_CONVERSATION_COMMENT: true  // Dodawaj komentarz z historią
+    }
+};
+
+// Helper function - NIE ZMIENIAJ
+function getOutcomeType(outcomeLabel) {
+    const patterns = {
+        'UMÓWIONO': /um[oó]wiono/i,
+        'ODDZWONIĆ': /oddzwoni[cć]/i,
+        'NIE ZAINTERESOWANY': /nie zainteresowany/i,
+        'ZŁY NUMER': /z[łl]y numer/i,
+        'MA JUŻ RAINBOW': /ma ju[zż] rainbow/i,
+        'KLIENT ODDZWONI': /klient oddzwoni/i
+    };
+    
+    for (const [key, pattern] of Object.entries(patterns)) {
+        if (pattern.test(outcomeLabel)) {
+            return key;
+        }
+    }
+    
+    return null;
+}
+
+// Export
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { TRELLO_ACTIONS_CONFIG, getOutcomeType };
+}
+

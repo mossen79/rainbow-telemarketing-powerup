@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="styles.css">
     <script src="https://p.trellocdn.com/power-up.min.js"></script>
     <script src="./config.js"></script>
+    <script src="./trello-actions-config.js"></script>
+    <script src="./trello-automation.js"></script>
 </head>
 <body>
     <div id="script-container">
@@ -289,17 +291,27 @@
             }
 
             async showEndScreen(outcome) {
-                const saveSuccess = await this.saveConversationToTrello(outcome);
-
+                // Pokaż loading state
                 const container = document.getElementById('script-content');
-                
-                if (saveSuccess) {
+                container.innerHTML = `
+                    <div class="end-screen">
+                        <h3>⏳ Zapisywanie...</h3>
+                        <p>Automatyzacja w Trello...</p>
+                    </div>
+                `;
+
+                // Wykonaj automatyczne akcje w Trello
+                const automationResults = await this.executeAutomation(outcome);
+
+                // Pokaż rezultat
+                if (automationResults.success) {
+                    const actionsHtml = this.formatActionsResult(automationResults.actions);
                     container.innerHTML = `
                         <div class="end-screen">
                             <h3>✅ Rozmowa zakończona</h3>
                             <p><strong>Wynik:</strong> ${outcome}</p>
-                            <p>✓ Przebieg rozmowy został zapisany w komentarzu.</p>
-                            <p>Możesz teraz zamknąć to okno.</p>
+                            ${actionsHtml}
+                            <p style="margin-top: 20px;">Możesz teraz zamknąć to okno.</p>
                         </div>
                     `;
                 } else {
@@ -325,59 +337,69 @@
                 this.backBtn.style.display = 'none';
             }
 
-            async saveConversationToTrello(outcome) {
+            async executeAutomation(outcome) {
                 try {
                     const history = this.engine.getHistory();
-
-                    let comment = `**Przebieg rozmowy - Rainbow Telemarketing**\n\n`;
-                    comment += `**Wynik:** ${outcome}\n\n`;
-                    comment += `**Historia rozmowy:**\n`;
-
-                    history.forEach((item, index) => {
-                        comment += `${index + 1}. **${item.stepName}**\n`;
-                        comment += `   Powiedziałem: "${item.said.substring(0, 100)}${item.said.length > 100 ? '...' : ''}"\n`;
-                        comment += `   Klient odpowiedział: ${item.response}\n`;
+                    
+                    // Znajdź wybraną datę (jeśli była)
+                    let selectedDate = null;
+                    for (const item of history) {
                         if (item.selectedDate) {
-                            comment += `   Data spotkania: ${item.selectedDate}\n`;
+                            selectedDate = item.selectedDate;
+                            break;
                         }
-                        comment += `\n`;
-                    });
-
-                    comment += `\n---\nWygenerowano przez Rainbow Telemarketing Scripts`;
-
-                    const card = await t.card('id');
-                    const cardId = card.id;
-
-                    const restApi = t.getRestApi();
-                    const isAuthorized = await restApi.isAuthorized();
-
-                    if (!isAuthorized) {
-                        await restApi.authorize({ scope: 'read,write' });
                     }
 
-                    const token = await restApi.getToken();
+                    const conversationData = {
+                        history: history,
+                        selectedDate: selectedDate
+                    };
 
-                    const url = `https://api.trello.com/1/cards/${cardId}/actions/comments?key=${APP_KEY}&token=${token}&text=${encodeURIComponent(comment)}`;
-
-                    const response = await fetch(url, {
-                        method: 'POST'
-                    });
-
-                    if (response.ok) {
-                        console.log('Komentarz zapisany w Trello');
-                        this.showNotification('✓ Rozmowa zapisana w Trello', 'success');
-                        return true;
+                    // Utwórz instancję automation engine
+                    const automation = new TrelloAutomation(t, TRELLO_ACTIONS_CONFIG, APP_KEY);
+                    
+                    // Wykonaj akcje
+                    const results = await automation.executeOutcomeActions(outcome, conversationData);
+                    
+                    if (results.success) {
+                        this.showNotification('✓ Akcje w Trello wykonane', 'success');
                     } else {
-                        const errorText = await response.text();
-                        console.error('Błąd zapisu:', response.status, errorText);
-                        this.showNotification('Nie udało się zapisać w Trello', 'error');
-                        return false;
+                        this.showNotification('⚠️ Niektóre akcje nie powiodły się', 'warning');
                     }
+
+                    return results;
+
                 } catch (error) {
-                    console.error('Błąd zapisywania komentarza:', error);
+                    console.error('Błąd automatyzacji:', error);
                     this.showNotification('Błąd połączenia z Trello', 'error');
-                    return false;
+                    
+                    return {
+                        success: false,
+                        error: error.message,
+                        actions: {},
+                        errors: [{ action: 'general', error: error.message }]
+                    };
                 }
+            }
+
+            formatActionsResult(actions) {
+                let html = '<div style="margin-top: 15px; text-align: left;">';
+                html += '<p><strong>Wykonane akcje:</strong></p>';
+                html += '<ul style="text-align: left; margin-left: 20px;">';
+                
+                if (actions.label) html += '<li>✓ Dodano etykietę</li>';
+                if (actions.dueDate) html += '<li>✓ Ustawiono datę (due date)</li>';
+                if (actions.comment) html += '<li>✓ Dodano komentarz z historią rozmowy</li>';
+                if (actions.move) html += '<li>✓ Przeniesiono kartę na odpowiednią listę</li>';
+                
+                if (Object.keys(actions).length === 0) {
+                    html += '<li>ℹ️ Brak automatycznych akcji dla tego typu zakończenia</li>';
+                }
+                
+                html += '</ul>';
+                html += '</div>';
+                
+                return html;
             }
 
             showNotification(message, type = 'info') {

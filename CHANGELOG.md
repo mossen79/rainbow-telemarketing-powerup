@@ -1,5 +1,79 @@
 # Changelog - Rainbow Telemarketing Power-Up
 
+## [1.2.0] - 2025-11-21
+
+### ✨ MAJOR NEW FEATURES - Automatyzacja Trello
+
+#### Automatyczne Akcje Po Zakończeniu Rozmowy:
+
+**Umówiono prezentację:**
+- ✅ Dodaje etykietę "Umówiono" (zielona)
+- ✅ Ustawia due date na datę spotkania
+- ✅ Przenosi kartę na listę "Termin spotkania"
+- ✅ Zapisuje historię rozmowy w komentarzu
+
+**Oddzwoń w innym terminie:**
+- ✅ Dodaje etykietę "W innym terminie" (żółta)
+- ✅ Ustawia due date na datę callback
+- ✅ Przenosi kartę na listę "Do oddzwonienia"
+- ✅ Zapisuje historię rozmowy
+
+**Brak zainteresowania / Zły numer:**
+- ✅ Dodaje odpowiednią etykietę (czerwona/czarna)
+- ✅ Przenosi kartę na listę "Stracony lead"
+- ✅ Zapisuje historię rozmowy
+
+**Ma już Rainbow:**
+- ✅ Dodaje etykietę "Ma już Rainbow" (niebieska)
+- ✅ Konfigurowalny target list
+- ✅ Zapisuje historię
+
+### 📦 Nowe Pliki
+
+- **trello-actions-config.js** - Konfiguracja akcji (listy, etykiety, mapowanie)
+- **trello-automation.js** - Engine automatyzacji Trello
+- **TRELLO-SETUP-GUIDE.md** - Szczegółowa instrukcja konfiguracji
+
+### 🔧 Zmiany Techniczne
+
+- Refactor `saveConversationToTrello` → `executeAutomation`
+- Dodano `TrelloAutomation` class z metodami:
+  - `addLabel()` - dodawanie etykiet
+  - `setDueDate()` - ustawianie terminów
+  - `moveCard()` - przenoszenie między listami
+  - `addComment()` - zapisywanie historii
+- Dodano `formatActionsResult()` - wyświetlanie wykonanych akcji
+- Loading state podczas zapisywania
+
+### 🎨 UI Improvements
+
+- Pokazuje "⏳ Zapisywanie..." podczas akcji
+- Lista wykonanych akcji po zakończeniu
+- Lepszy feedback dla użytkownika
+
+### ⚙️ Konfiguracja
+
+Plik `trello-actions-config.js` pozwala na:
+- Mapowanie ID list Trello
+- Definiowanie nazw etykiet
+- Włączanie/wyłączanie poszczególnych funkcji
+- Customizację akcji dla każdego outcome
+
+### 🐛 Bug Fixes
+
+- Naprawiono problem z nie zapisującymi się komentarzami
+- Poprawiono error handling dla Trello API
+- Dodano szczegółowe logi błędów
+
+### 📝 Dokumentacja
+
+- Nowy **TRELLO-SETUP-GUIDE.md** - step-by-step setup
+- Zaktualizowano README.md
+- Instrukcje znajdowania ID list
+- Troubleshooting guide
+
+---
+
 ## [1.1.0] - 2025-11-21
 
 ### 🔒 Security

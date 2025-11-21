@@ -1,37 +1,36 @@
-// Trello Actions Configuration
-// WYGENEROWANO AUTOMATYCZNIE: 21.11.2025, 15:45:27
+// Trello Actions Configuration - LIDY ODKURZACZ
+// Tablica: Lidy Odkurzacz (ID: 6388ea7a0896f202f14ba1b1)
+// Wygenerowano: 2025-11-21
 
 const TRELLO_ACTIONS_CONFIG = {
-    // ID list Trello
+    // ID list Trello z tablicy "Lidy Odkurzacz"
     LISTS: {
-        'TERMIN_SPOTKANIA': '69207b05859f00c16109506b',  // Termin spotkania
-        'STRACONY_LEAD': '69207b055b6d7d0fa20f40d3',      // Stracony lead
-        'CALLBACK': '69207b05c7b60b93ccdbed35'               // Do oddzwonienia
+        'TERMIN_SPOTKANIA': '66a799b51db77ab8688e964f',  // 📅TERMIN SPOTKANIA📅
+        'STRACONY_LEAD': '67b9d0eb24121e7e00a009e3',      // ❌STRACONY LID❌
+        'NOWA_LISTA': '6815f580d9254b5c401f2421'          // Nowe Lidy (dla callback)
     },
 
-    // Nazwy etykiet (muszą pasować do Trello!)
+    // Nazwy etykiet (NIE UŻYWANE - używamy bezpośrednio ID z formularza)
     LABELS: {
-        'UMOWIONO': 'Umówiono',
-        'CALLBACK': 'W innym terminie',
-        'BRAK_ZAINTERESOWANIA': 'Brak zainteresowania',
-        'ZLY_NUMER': 'Zły numer',
-        'MA_JUZ': 'Ma już Rainbow'
+        'UMOWIONO': 'Umówione',
+        'CALLBACK': 'Do ponownego umówienia',
+        'NIE_ODBIERA': 'nie odbiera'
     },
 
     // Mapowanie outcome do akcji
     OUTCOME_ACTIONS: {
         'UMÓWIONO': {
-            addLabel: 'UMOWIONO',
+            // Etykiety dodawane są z formularza (user wybiera)
             moveToList: 'TERMIN_SPOTKANIA',
-            setDueDate: true,
+            setDueDate: true,  // Data + godzina z formularza
             addComment: true,
             commentPrefix: '✅ UMÓWIONO'
         },
         
         'ODDZWONIĆ': {
-            addLabel: 'CALLBACK',
-            moveToList: 'CALLBACK',
-            setDueDate: true,
+            // Etykiety z formularza
+            moveToList: 'NOWA_LISTA',  // Zostaje na "Nowe Lidy"
+            setDueDate: true,  // Data callback + godzina
             addComment: true,
             commentPrefix: '⏰ CALLBACK'
         },
@@ -47,7 +46,7 @@ const TRELLO_ACTIONS_CONFIG = {
             addLabel: 'ZLY_NUMER',
             moveToList: 'STRACONY_LEAD',
             addComment: true,
-            commentPrefix: '❌ ZŁY NUMER'
+            commentPrefix: '❌ ZŁY NUMER / POMYŁKA'
         },
         
         'MA JUŻ RAINBOW': {
@@ -58,7 +57,7 @@ const TRELLO_ACTIONS_CONFIG = {
         },
         
         'KLIENT ODDZWONI': {
-            addLabel: 'CALLBACK',
+            // Etykiety z formularza
             addComment: true,
             commentPrefix: '📞 KLIENT ODDZWONI'
         }
@@ -66,10 +65,10 @@ const TRELLO_ACTIONS_CONFIG = {
 
     // Feature flags
     FEATURES: {
-        AUTO_MOVE_CARDS: true,
-        AUTO_ADD_LABELS: true,
-        AUTO_SET_DUE_DATE: true,
-        ADD_CONVERSATION_COMMENT: true
+        AUTO_MOVE_CARDS: true,          // Automatycznie przenoś karty
+        AUTO_ADD_LABELS: true,          // Dodawaj etykiety (z formularza lub domyślne)
+        AUTO_SET_DUE_DATE: true,        // Ustaw due date z godziną
+        ADD_CONVERSATION_COMMENT: true  // Dodawaj komentarz z historią
     }
 };
 

@@ -48,23 +48,53 @@ class TrelloAutomation {
                 errors: []
             };
 
-            // 1. Dodaj etykietę
-            if (this.config.FEATURES.AUTO_ADD_LABELS && actions.addLabel) {
+            // 1. Dodaj etykiety (z formularza lub domyślne)
+            if (this.config.FEATURES.AUTO_ADD_LABELS) {
                 try {
-                    await this.addLabel(cardId, actions.addLabel, token);
-                    results.actions.label = 'added';
+                    if (conversationData.labels && conversationData.labels.length > 0) {
+                        // Użyj etykiet wybranych przez użytkownika
+                        const labelResults = await this.addMultipleLabels(cardId, conversationData.labels, token);
+                        results.actions.labels = `added ${labelResults.filter(r => r.success).length}`;
+                    } else if (actions.addLabel) {
+                        // Fallback do domyślnej etykiety z config
+                        await this.addLabel(cardId, actions.addLabel, token);
+                        results.actions.label = 'added';
+                    }
                 } catch (error) {
                     results.errors.push({ action: 'addLabel', error: error.message });
                 }
             }
 
-            // 2. Ustaw due date (jeśli podano datę spotkania)
+            // 2. Ustaw due date (z godziną jeśli podano)
             if (this.config.FEATURES.AUTO_SET_DUE_DATE && actions.setDueDate && conversationData.selectedDate) {
                 try {
-                    await this.setDueDate(cardId, conversationData.selectedDate, token);
+                    await this.setDueDate(
+                        cardId, 
+                        conversationData.selectedDate, 
+                        conversationData.selectedTime || '9:00',
+                        token
+                    );
                     results.actions.dueDate = 'set';
                 } catch (error) {
                     results.errors.push({ action: 'setDueDate', error: error.message });
+                }
+            }
+            
+            // 2b. Dodaj adres do opisu karty (jeśli podano)
+            if (conversationData.address && conversationData.address.trim()) {
+                try {
+                    // Pobierz istniejący opis
+                    const cardResponse = await fetch(`https://api.trello.com/1/cards/${cardId}?key=${this.appKey}&token=${token}&fields=desc`);
+                    const cardData = await cardResponse.json();
+                    const existingDesc = cardData.desc || '';
+                    
+                    // Dodaj adres na początku opisu
+                    const newDesc = `📍 ADRES SPOTKANIA:\n${conversationData.address}\n\n${existingDesc}`;
+                    
+                    await this.updateDescription(cardId, newDesc, token);
+                    results.actions.address = 'added to description';
+                } catch (error) {
+                    results.errors.push({ action: 'updateAddress', error: error.message });
                 }
             }
 
@@ -142,13 +172,14 @@ class TrelloAutomation {
     }
 
     /**
-     * Ustawia due date na karcie
+     * Ustawia due date na karcie (z godziną)
      */
-    async setDueDate(cardId, dateString, token) {
+    async setDueDate(cardId, dateString, timeString, token) {
         // dateString format: YYYY-MM-DD
-        // Konwertuj na ISO string z godziną 9:00
+        // timeString format: HH:MM (np. "10:00")
+        const [hours, minutes] = timeString ? timeString.split(':') : ['9', '0'];
         const date = new Date(dateString);
-        date.setHours(9, 0, 0, 0);
+        date.setHours(parseInt(hours), parseInt(minutes), 0, 0);
         const dueDate = date.toISOString();
 
         const url = `https://api.trello.com/1/cards/${cardId}?key=${this.appKey}&token=${token}&due=${encodeURIComponent(dueDate)}`;
@@ -160,6 +191,45 @@ class TrelloAutomation {
         }
 
         return dueDate;
+    }
+    
+    /**
+     * Aktualizuje opis karty (description) - dla adresu
+     */
+    async updateDescription(cardId, description, token) {
+        const url = `https://api.trello.com/1/cards/${cardId}?key=${this.appKey}&token=${token}&desc=${encodeURIComponent(description)}`;
+        
+        const response = await fetch(url, { method: 'PUT' });
+        
+        if (!response.ok) {
+            throw new Error(`Failed to update description: ${response.status}`);
+        }
+
+        return true;
+    }
+    
+    /**
+     * Dodaje wiele etykiet na raz (z listy ID)
+     */
+    async addMultipleLabels(cardId, labelIds, token) {
+        const results = [];
+        
+        for (const labelId of labelIds) {
+            try {
+                const url = `https://api.trello.com/1/cards/${cardId}/idLabels?key=${this.appKey}&token=${token}&value=${labelId}`;
+                const response = await fetch(url, { method: 'POST' });
+                
+                if (response.ok) {
+                    results.push({ labelId, success: true });
+                } else {
+                    results.push({ labelId, success: false, error: response.status });
+                }
+            } catch (error) {
+                results.push({ labelId, success: false, error: error.message });
+            }
+        }
+        
+        return results;
     }
 
     /**

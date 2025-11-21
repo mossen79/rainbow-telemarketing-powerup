@@ -291,17 +291,147 @@
             }
 
             async showEndScreen(outcome) {
+                // Sprawdź czy outcome wymaga dodatkowych danych
+                const needsDetails = this.outcomeNeedsDetails(outcome);
+                
+                if (needsDetails) {
+                    this.showDetailsForm(outcome);
+                } else {
+                    // Bezpośrednio zapisz bez formularza
+                    await this.saveAndFinish(outcome, {});
+                }
+            }
+
+            outcomeNeedsDetails(outcome) {
+                // Sprawdź czy outcome wymaga dodatkowych danych (data, adres, etc.)
+                const patterns = {
+                    'UMOWIONO': /um[oó]wiono/i,
+                    'CALLBACK': /oddzwoni[cć]/i,
+                };
+                
+                for (const pattern of Object.values(patterns)) {
+                    if (pattern.test(outcome)) {
+                        return true;
+                    }
+                }
+                
+                return false;
+            }
+
+            showDetailsForm(outcome) {
+                const container = document.getElementById('script-content');
+                const isUmowiono = /um[oó]wiono/i.test(outcome);
+                
+                // Generuj opcje godzin
+                const hours = [];
+                for (let h = 9; h <= 20; h++) {
+                    hours.push(`<option value="${h}:00">${h}:00</option>`);
+                }
+                
+                container.innerHTML = `
+                    <div class="details-form">
+                        <h3>${isUmowiono ? '✅ UMÓWIONO' : '⏰ ODDZWONIĆ'}</h3>
+                        <p style="margin-bottom: 20px;">Uzupełnij szczegóły przed zapisaniem:</p>
+                        
+                        <div class="form-group">
+                            <label class="form-label">📅 Data ${isUmowiono ? 'spotkania' : 'callback'}:</label>
+                            <input type="date" id="details-date" class="form-input" 
+                                   min="${new Date().toISOString().split('T')[0]}" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">🕐 Godzina:</label>
+                            <select id="details-time" class="form-input" required>
+                                <option value="">-- wybierz --</option>
+                                ${hours.join('')}
+                            </select>
+                        </div>
+                        
+                        ${isUmowiono ? `
+                        <div class="form-group">
+                            <label class="form-label">📍 Adres spotkania:</label>
+                            <textarea id="details-address" class="form-textarea" 
+                                      placeholder="ul. Przykładowa 123&#10;00-000 Warszawa" 
+                                      rows="3"></textarea>
+                        </div>
+                        ` : ''}
+                        
+                        <div class="form-group">
+                            <label class="form-label">🏷️ Etykiety:</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" value="6388eba8dc90ef0163c62a73" 
+                                           ${isUmowiono ? 'checked' : ''}>
+                                    <span class="label-badge label-green">✅ Umówione</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" value="63b6d963b75c760443ab712f"
+                                           ${!isUmowiono ? 'checked' : ''}>
+                                    <span class="label-badge label-orange">⏰ W późniejszym terminie</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" value="68889670d8479029195b3fd2">
+                                    <span class="label-badge label-red">📞 Nie odbiera</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button id="save-details-btn" class="response-btn success">
+                                💾 Zapisz i zakończ rozmowę
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                // Attach event listener
+                document.getElementById('save-details-btn').addEventListener('click', () => {
+                    this.handleDetailsSave(outcome);
+                });
+            }
+
+            async handleDetailsSave(outcome) {
+                const date = document.getElementById('details-date').value;
+                const time = document.getElementById('details-time').value;
+                const address = document.getElementById('details-address')?.value || '';
+                
+                // Walidacja
+                if (!date) {
+                    this.showNotification('Proszę wybrać datę', 'error');
+                    return;
+                }
+                
+                if (!time) {
+                    this.showNotification('Proszę wybrać godzinę', 'error');
+                    return;
+                }
+                
+                // Pobierz zaznaczone etykiety
+                const selectedLabels = Array.from(document.querySelectorAll('.checkbox-group input:checked'))
+                    .map(cb => cb.value);
+                
+                const details = {
+                    date: date,
+                    time: time,
+                    address: address,
+                    labels: selectedLabels
+                };
+                
+                await this.saveAndFinish(outcome, details);
+            }
+
+            async saveAndFinish(outcome, details) {
                 // Pokaż loading state
                 const container = document.getElementById('script-content');
                 container.innerHTML = `
                     <div class="end-screen">
                         <h3>⏳ Zapisywanie...</h3>
-                        <p>Automatyzacja w Trello...</p>
+                        <p>Aktualizacja karty w Trello...</p>
                     </div>
                 `;
 
                 // Wykonaj automatyczne akcje w Trello
-                const automationResults = await this.executeAutomation(outcome);
+                const automationResults = await this.executeAutomation(outcome, details);
 
                 // Pokaż rezultat
                 if (automationResults.success) {
@@ -337,22 +467,16 @@
                 this.backBtn.style.display = 'none';
             }
 
-            async executeAutomation(outcome) {
+            async executeAutomation(outcome, details = {}) {
                 try {
                     const history = this.engine.getHistory();
                     
-                    // Znajdź wybraną datę (jeśli była)
-                    let selectedDate = null;
-                    for (const item of history) {
-                        if (item.selectedDate) {
-                            selectedDate = item.selectedDate;
-                            break;
-                        }
-                    }
-
                     const conversationData = {
                         history: history,
-                        selectedDate: selectedDate
+                        selectedDate: details.date || null,
+                        selectedTime: details.time || null,
+                        address: details.address || '',
+                        labels: details.labels || []
                     };
 
                     // Utwórz instancję automation engine

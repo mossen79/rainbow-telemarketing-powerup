@@ -199,10 +199,7 @@ body {
 }
 
 #history-panel {
-    margin-top: 20px;
-    padding: 15px;
-    background: #f9fafc;
-    border-radius: 8px;
+    display: none;
 }
 
 #history-list {

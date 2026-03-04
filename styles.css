@@ -198,6 +198,17 @@ body {
     color: #172b4d;
 }
 
+.loop-btn {
+    background: #eb5a46 !important;
+    color: white !important;
+    font-weight: 700;
+}
+
+.loop-btn:hover {
+    background: #cf513d !important;
+    color: white !important;
+}
+
 #history-panel {
     display: none;
 }

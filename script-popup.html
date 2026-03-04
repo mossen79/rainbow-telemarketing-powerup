@@ -1,6 +1,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rainbow Telemarketing Scripts</title>
-    <link rel="stylesheet" href="styles.css?v=6">
+    <link rel="stylesheet" href="styles.css?v=7">
     <script src="https://p.trellocdn.com/power-up.min.js"></script>
 </head>
 <body>
@@ -37,6 +37,7 @@
 
         <div id="script-footer">
             <button id="back-btn" class="secondary-btn" style="display:none;">← Cofnij</button>
+            <button id="loop-btn" class="secondary-btn loop-btn">Wracam do tematu</button>
             <button id="copy-notes-btn" class="secondary-btn success">📋 Skopiuj notatki</button>
             <button id="close-btn" class="secondary-btn">✕ Zamknij</button>
         </div>
@@ -320,6 +321,15 @@
                 // Wyczyść notatki przy zmianie kampanii
                 const notes = document.getElementById('notes-textarea');
                 if (notes) notes.value = '';
+            });
+
+            // Czerwony guzik "Wracam do tematu" - petla na tym samym kroku
+            document.getElementById('loop-btn').addEventListener('click', function() {
+                const scriptText = document.getElementById('script-text');
+                const step = SCRIPT_DATA.steps[scriptEngine.currentStep];
+                if (scriptText && step) {
+                    scriptText.textContent = 'Oczywiście, rozumiem. Jednak wracając do tematu...\n\n' + step.say;
+                }
             });
         });
     </script>

@@ -66,6 +66,23 @@
         // Kampania z URL param lub domyślna
         const urlParams = new URLSearchParams(window.location.search);
         const campaignParam = urlParams.get('campaign');
+        const cardName = urlParams.get('card') || '';
+        // Parsuj imie z nazwy karty (np. "Jan Kowalski 723456789" → imie=Jan)
+        const cardParts = cardName.trim().split(/[\s\-–]+/);
+        const clientImie = cardParts[0] || '';
+        const clientNazwisko = (cardParts.length > 1 && !/^\d/.test(cardParts[1])) ? cardParts[1] : '';
+        const clientTelefon = cardParts.find(p => /^\+?\d{7,}$/.test(p.replace(/\s/g,''))) || '';
+
+        function fillPlaceholders(text) {
+            if (!text) return text;
+            return text
+                .replace(/\[IMIĘ\]/g, clientImie || '[IMIĘ]')
+                .replace(/\[NAZWISKO\]/g, clientNazwisko || '[NAZWISKO]')
+                .replace(/\[IMIĘ Z LEADA\]/g, clientImie || '[IMIĘ Z LEADA]')
+                .replace(/\[TELEFON\]/g, clientTelefon || '[TELEFON]')
+                .replace(/\[NUMER FIRMY\]/g, clientTelefon || '[NUMER FIRMY]');
+        }
+
         let SCRIPT_DATA = (campaignParam && SCRIPTS[campaignParam]) ? SCRIPTS[campaignParam] : SCRIPTS.odkurzacz;
 
         class ScriptEngine {
@@ -175,13 +192,13 @@
                     return;
                 }
 
-                this.scriptText.textContent = step.say;
+                this.scriptText.textContent = fillPlaceholders(step.say);
 
                 // Render tip
                 const tipEl = document.getElementById('script-tip');
                 if (tipEl) {
                     if (step.tip) {
-                        tipEl.textContent = step.tip;
+                        tipEl.textContent = fillPlaceholders(step.tip);
                         tipEl.style.display = 'block';
                     } else {
                         tipEl.style.display = 'none';
@@ -328,7 +345,7 @@
                 const scriptText = document.getElementById('script-text');
                 const step = SCRIPT_DATA.steps[scriptEngine.currentStep];
                 if (scriptText && step) {
-                    scriptText.textContent = 'Oczywiście, rozumiem. Jednak wracając do tematu...\n\n' + step.say;
+                    scriptText.textContent = 'Oczywiście, rozumiem. Jednak wracając do tematu...\n\n' + fillPlaceholders(step.say);
                 }
             });
         });

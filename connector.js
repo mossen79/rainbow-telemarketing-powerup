@@ -15,10 +15,13 @@ TrelloPowerUp.initialize({
                 icon: 'https://mossen79.github.io/rainbow-telemarketing-powerup/icon-powerup.svg',
                 text: 'WYMIANA',
                 callback: function (t) {
-                    return t.modal({
-                        url: './script-popup.html?campaign=wymiana',
-                        fullscreen: true,
-                        title: 'WYMIANA Rainbow'
+                    return t.card('name').then(function(card) {
+                        var name = encodeURIComponent(card.name || '');
+                        return t.modal({
+                            url: './script-popup.html?campaign=wymiana&card=' + name,
+                            fullscreen: true,
+                            title: 'WYMIANA Rainbow'
+                        });
                     });
                 }
             },
@@ -26,10 +29,13 @@ TrelloPowerUp.initialize({
                 icon: 'https://mossen79.github.io/rainbow-telemarketing-powerup/icon-powerup.svg',
                 text: 'Odkurzacz (nowi)',
                 callback: function (t) {
-                    return t.modal({
-                        url: './script-popup.html?campaign=odkurzacz',
-                        fullscreen: true,
-                        title: 'Odkurzacz Rainbow'
+                    return t.card('name').then(function(card) {
+                        var name = encodeURIComponent(card.name || '');
+                        return t.modal({
+                            url: './script-popup.html?campaign=odkurzacz&card=' + name,
+                            fullscreen: true,
+                            title: 'Odkurzacz Rainbow'
+                        });
                     });
                 }
             }
@@ -43,10 +49,13 @@ TrelloPowerUp.initialize({
                 icon: 'https://mossen79.github.io/rainbow-telemarketing-powerup/icon-powerup.svg',
                 color: 'blue',
                 callback: function(t) {
-                    return t.modal({
-                        url: './script-popup.html?campaign=wymiana',
-                        fullscreen: true,
-                        title: 'WYMIANA Rainbow'
+                    return t.card('name').then(function(card) {
+                        var name = encodeURIComponent(card.name || '');
+                        return t.modal({
+                            url: './script-popup.html?campaign=wymiana&card=' + name,
+                            fullscreen: true,
+                            title: 'WYMIANA Rainbow'
+                        });
                     });
                 }
             },
@@ -56,10 +65,13 @@ TrelloPowerUp.initialize({
                 icon: 'https://mossen79.github.io/rainbow-telemarketing-powerup/icon-powerup.svg',
                 color: 'green',
                 callback: function(t) {
-                    return t.modal({
-                        url: './script-popup.html?campaign=odkurzacz',
-                        fullscreen: true,
-                        title: 'Odkurzacz Rainbow'
+                    return t.card('name').then(function(card) {
+                        var name = encodeURIComponent(card.name || '');
+                        return t.modal({
+                            url: './script-popup.html?campaign=odkurzacz&card=' + name,
+                            fullscreen: true,
+                            title: 'Odkurzacz Rainbow'
+                        });
                     });
                 }
             }

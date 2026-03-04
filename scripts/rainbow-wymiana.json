@@ -1,327 +1,218 @@
 {
-  "name": "WYMIANA Rainbow (Straight Line)",
-  "description": "Skrypt Belfort Straight Line: OPEN (8 kroków) → TRANSITION → BODY → CLOSE z In-Home Confirmation (dwie nogi)",
-  "version": "2.0",
+  "name": "WYMIANA Rainbow",
+  "version": "3.0",
   "campaign": "wymiana",
   "steps": {
-
-
     "start": {
-      "name": "1. ENTUZJAZM + FAMILIAR",
-      "say": "Halo! Dzień dobry, czy [IMIĘ]?\n\n[TONALNOŚĆ: ostro, z energią, uśmiech w głosie! Masz 4 sekundy żeby zrobić wrażenie. Mów jakbyś dzwonił/a do przyjaciela]",
+      "name": "Powitanie",
+      "say": "Halo, dzien dobry! Czy rozmawiam z Pania/Panem [IMIE]?",
+      "tip": "Usmiech! Energia! To jest dobra wiadomosc dla klienta!",
       "responses": [
-        {"label": "Tak, słucham", "next": "open_intro"},
-        {"label": "Kto mówi?", "next": "open_intro"},
-        {"label": "To nie ja / Zły numer", "next": "end_wrong_number"},
-        {"label": "Nie mam czasu", "next": "callback_request"}
+        { "label": "Tak, slucham", "next": "intro" },
+        { "label": "Zly numer", "next": "end_wrong_number" },
+        { "label": "Nie mam czasu", "next": "callback" },
+        { "label": "Nie interesuje", "next": "end_not_interested" }
       ]
     },
-
-
-    "open_intro": {
-      "name": "2-3. PRZEDSTAW SIĘ SZYBKO",
-      "say": "[IMIĘ]! [TWOJE IMIĘ] z Rainbow System. Jak się Pani/Pan dzisiaj miewa?\n\n[Mów szczerze, jakby to był jedyny telefon dzisiaj. Użyj IMIENIA klienta!]",
+    "intro": {
+      "name": "Przedstawienie",
+      "say": "Dzien dobry Pani/Panie [IMIE]! Mam na imie [TWOJE IMIE], dzwonie z firmy Rainbow. Zostawili Panstwo kontakt na naszej stronie w sprawie wymiany odkurzacza -- pamietaja Panstwo?",
       "responses": [
-        {"label": "Dobrze / Dziękuję", "next": "open_restate"},
-        {"label": "O co chodzi?", "next": "open_restate"},
-        {"label": "Nie interesuje mnie", "next": "open_objection"}
+        { "label": "Tak, pamietam", "next": "pitch" },
+        { "label": "Nie pamietam", "next": "pitch" },
+        { "label": "Nie mam Rainbow", "next": "end_no_rainbow" }
       ]
     },
-
-
-    "open_restate": {
-      "name": "4-5. FIRMA + POWER WORDS",
-      "say": "Doskonale! [IMIĘ], pewnie słyszeli Państwo o Rainbow System -- mamy 90 lat tradycji, jesteśmy JEDYNĄ firmą w branży z programem wymiany starych urządzeń na najnowsze modele.\n\n[Power words: jedyna, ekskluzywny, najnowsze, bezpłatny]",
+    "pitch": {
+      "name": "Pitch oferty",
+      "say": "Dzwonie bo mamy teraz specjalny program dla naszych dotychczasowych klientow. Dotyczy BEZPLATNEGO PRZEGLADU Panstwa obecnego Rainbow i mozliwosci WYMIANY starego modelu na najnowszy, z zaliczeniem wartosci obecnego urzadzenia.\n\nPrzeglad jest calkowicie bezplatny i oczywiscie do niczego nie zobowiazuje. Nasz serwisant przyjedzie, sprawdzi stan Panstwa urzadzenia, wyceni je i przedstawi oferte wymiany.\n\nCzy bylby Panstwo zainteresowani takim bezplatnym przegladem?",
       "responses": [
-        {"label": "Tak, znam Rainbow", "next": "open_justifier"},
-        {"label": "Coś słyszałem/am", "next": "open_justifier"},
-        {"label": "Nie znam", "next": "open_justifier_cold"}
+        { "label": "Tak, interesuje", "next": "kwalifikacja_model" },
+        { "label": "Ile kosztuje?", "next": "objection_cena" },
+        { "label": "Musze pomyslec", "next": "objection_pomyslec" },
+        { "label": "Nie, dziekuje", "next": "end_not_interested" }
       ]
     },
-
-
-    "open_justifier": {
-      "name": "6. JUSTIFIER + SCARCITY",
-      "say": "Świetnie! A powód dla którego dzwonię DZISIAJ -- zostawili Państwo kontakt na naszej stronie w sprawie wymiany Rainbow, i właśnie teraz mamy otwarte miejsca w programie wymiany w Państwa regionie.\n\nMuszę tylko zadać kilka szybkich pytań żeby sprawdzić czy się Państwo kwalifikują. Pasuje?\n\n[TONALNOŚĆ: scarcity -- ograniczone miejsca, działaj teraz]",
+    "kwalifikacja_model": {
+      "name": "Kwalifikacja: model",
+      "say": "Doskonale! Zeby serwisant mogl sie odpowiednio przygotowac, mam kilka szybkich pytan.\n\nJaki model Rainbow Panstwo maja -- pamietaja Panstwo mniej wiecej z jakiego roku?",
+      "tip": "NOTUJ odpowiedzi -- buduje rapport i daje info serwisantowi",
       "responses": [
-        {"label": "Tak, dawaj pytania", "next": "qualify_model"},
-        {"label": "O co dokładnie chodzi?", "next": "body_benefits"},
-        {"label": "Nie interesuje mnie", "next": "open_objection"}
+        { "label": "Podal model/rok", "next": "kwalifikacja_stan" },
+        { "label": "Nie pamieta", "next": "kwalifikacja_stan" }
       ]
     },
-
-    "open_justifier_cold": {
-      "name": "6. JUSTIFIER (zimny lead)",
-      "say": "Nic nie szkodzi! W skrócie -- Rainbow to amerykański system czyszczenia klasy premium. Zostawili Państwo kontakt na naszej stronie.\n\nPowód dla którego dzwonię DZISIAJ -- mamy teraz ekskluzywny program wymiany starych modeli na najnowsze, z zaliczeniem wartości starego urządzenia. I właśnie otwieramy miejsca w Państwa regionie.\n\nMuszę zadać tylko kilka pytań żeby sprawdzić kwalifikację. Pasuje?\n\n[Scarcity: otwieramy miejsca, ograniczona dostępność]",
+    "kwalifikacja_stan": {
+      "name": "Kwalifikacja: stan",
+      "say": "A urzadzenie dziala normalnie, czy sa jakies problemy z nim?",
+      "tip": "NOTUJ odpowiedzi",
       "responses": [
-        {"label": "OK, pytaj", "next": "qualify_model"},
-        {"label": "Nie mam Rainbow", "next": "end_no_rainbow"},
-        {"label": "Nie interesuje", "next": "open_objection"}
+        { "label": "Dziala OK", "next": "kwalifikacja_malzonek" },
+        { "label": "Ma problemy", "next": "kwalifikacja_malzonek" }
       ]
     },
-
-
-    "open_objection": {
-      "name": "Obiekcja na starcie",
-      "say": "[IMIĘ], rozumiem w stu procentach! Proszę mi pozwolić tylko na 30 sekund wyjaśnienia.\n\nDzwonię bo Państwa stary Rainbow MA WARTOŚĆ. Serwisant przyjedzie, wyceni go ZA DARMO, i jeśli oferta wymiany nie pasuje -- nic Państwo nie tracą. Zero ryzyka.\n\nBrzmi fair?",
+    "kwalifikacja_malzonek": {
+      "name": "Kwalifikacja: malzonek",
+      "say": "Rozumiem. A mieszkaja Panstwo z mezem/zona?",
+      "tip": "OBOWIAZKOWE PYTANIE! Od tego zalezy dalszy przebieg!",
       "responses": [
-        {"label": "OK, niech mówi dalej", "next": "qualify_model"},
-        {"label": "Ile to kosztuje?", "next": "objection_cena"},
-        {"label": "Naprawdę nie chcę", "next": "end_not_interested"}
+        { "label": "Tak, z mezem/zona", "next": "dwie_nogi" },
+        { "label": "Nie, sam/sama", "next": "book_termin" }
       ]
     },
-
-
-    "qualify_model": {
-      "name": "7. KWALIFIKACJA: Model",
-      "say": "Super! Kilka szybkich pytań:\n\nJaki model Rainbow Państwo mają? Pamiętają Państwo mniej więcej rok zakupu?\n\n[NOTUJ! Ważne dla serwisanta. Od mniej do bardziej inwazyjnych pytań]",
+    "dwie_nogi": {
+      "name": "Dwie nogi (presupozycja)",
+      "say": "Pani/Panie [IMIE], jeszcze jedno. Zeby serwisant mogl W PELNI WYCENIC Panstwa obecne urzadzenie i przygotowac NAJLEPSZA MOZLIWA OFERTE WYMIANY -- potrzebujemy zeby oboje Panstwo byli w domu.\n\nSerwisant omowi z Panstwem rozne warianty, wiec wazne zeby oboje mogli Panstwo zadecydowac na spokojnie.\n\nPan/Pani [IMIE MALZONKA] tez bedzie, prawda?",
+      "tip": "PRESUPOZYCJA BELFORDA: zakladasz ze TAK! Ton pewnosci, nie pytania.",
       "responses": [
-        {"label": "Podał model/rok -- NOTUJ", "next": "qualify_condition"},
-        {"label": "Nie pamięta modelu", "next": "qualify_condition"}
+        { "label": "Tak, oboje bedziemy", "next": "book_termin" },
+        { "label": "W pracy / nie bedzie", "next": "rebuttal_praca" },
+        { "label": "Sam/sama decyduje", "next": "rebuttal_sam_decyduje" },
+        { "label": "Nie obchodzi go/jej", "next": "rebuttal_nie_obchodzi" }
       ]
     },
-
-    "qualify_condition": {
-      "name": "7. KWALIFIKACJA: Stan urządzenia",
-      "say": "A jak urządzenie działa? Wszystko OK, czy są jakieś problemy -- może ssanie słabsze, hałas, coś cieknie?\n\n[8. SŁUCHAJ! Nie dominuj pytaniami. Daj klientowi mówić. Buduj rapport]",
-      "responses": [
-        {"label": "Działa OK", "next": "transition"},
-        {"label": "Ma problemy -- NOTUJ jakie", "next": "transition_problems"},
-        {"label": "Prawie nie używam", "next": "transition"}
-      ]
-    },
-
-
-    "transition": {
-      "name": "TRANSITION",
-      "say": "[IMIĘ], na podstawie tego co Pani/Pan mi powiedział/a -- to brzmi jakby Państwo IDEALNIE kwalifikowali się do tego programu.\n\nJeśli ma Pani/Pan minutkę, chciałbym wyjaśnić jak to dokładnie działa. Ma Pani/Pan chwilę?\n\n[TONALNOŚĆ: pewność siebie, entuzjazm, \"to jest idealne dla Ciebie\"]",
-      "responses": [
-        {"label": "Tak, mów dalej", "next": "body_benefits"},
-        {"label": "Krótko proszę", "next": "body_benefits"},
-        {"label": "Nie mam czasu", "next": "callback_request"}
-      ]
-    },
-
-    "transition_problems": {
-      "name": "TRANSITION (ma problemy)",
-      "say": "Rozumiem -- i wie Pani/Pan co, to jest DOKŁADNIE powód dla którego uruchomiliśmy ten program.\n\nWielu naszych klientów ma podobne problemy ze starszymi modelami. I na podstawie tego co Pani/Pan mi powiedział/a -- jest Pani/Pan IDEALNYM kandydatem do wymiany.\n\nChciałbym wyjaśnić jak to działa. Ma Pani/Pan minutkę?",
-      "responses": [
-        {"label": "Tak, mów dalej", "next": "body_benefits"},
-        {"label": "Krótko proszę", "next": "body_benefits"},
-        {"label": "Nie mam czasu", "next": "callback_request"}
-      ]
-    },
-
-
-    "body_benefits": {
-      "name": "BODY: Korzyści (nie cechy!)",
-      "say": "Proszę zobaczyć -- cały program sprowadza się do trzech rzeczy:\n\nPo pierwsze: serwisant przyjeżdża do Państwa ZA DARMO, robi pełny przegląd i WYCENIA Państwa obecny Rainbow. Wie Pani/Pan ile jest wart.\n\nPo drugie: wartość starego urządzenia ZALICZA SIĘ na poczet nowego. Więc nie płacą Państwo pełnej ceny.\n\nI po trzecie: nowy model ma technologię jakiej stary nie miał -- lepsze filtrowanie, cichsza praca, lżejszy. Dom czyściejszy w połowę czasu.\n\nMa to sens?\n\n[STOPPING OFF POINT -- czekaj na \"tak\"]",
-      "responses": [
-        {"label": "Tak, brzmi dobrze / Ma sens", "next": "body_urgency"},
-        {"label": "Ile kosztuje wymiana?", "next": "objection_cena"},
-        {"label": "Muszę pomyśleć", "next": "objection_think"}
-      ]
-    },
-
-
-    "body_urgency": {
-      "name": "BODY: Urgency + kontrola",
-      "say": "Doskonale! I jeszcze jedno -- ten program wymiany ma OGRANICZONĄ liczbę miejsc w każdym regionie. Jak się zapełni, nie wiem kiedy znowu otworzymy.\n\nA przegląd jest bezpłatny -- więc nawet jeśli oferta wymiany nie pasuje, nic Państwo nie tracą.\n\nWięc tak naprawdę pytanie brzmi -- wolą Państwo WIECZOREM czy w WEEKEND?\n\n[KONTROLA: daj dwie opcje, nie pytaj \"czy chcą\"]",
-      "responses": [
-        {"label": "Wieczorem", "next": "close_malzonek"},
-        {"label": "Weekend", "next": "close_malzonek"},
-        {"label": "Muszę pomyśleć", "next": "objection_think"},
-        {"label": "Nie interesuje", "next": "objection_last_chance"}
-      ]
-    },
-
-
-    "close_malzonek": {
-      "name": "CLOSE: Pytanie o małżonka",
-      "say": "Świetnie! A mieszkają Państwo z mężem/żoną?\n\n[OBOWIĄZKOWE PYTANIE -- od tego zależy dalsza ścieżka!]",
-      "responses": [
-        {"label": "Tak, z mężem/żoną", "next": "close_benefit_condition"},
-        {"label": "Nie, sam/sama", "next": "close_single"}
-      ]
-    },
-
-
-    "close_single": {
-      "name": "CLOSE: Osoba samotna",
-      "say": "Rozumiem. A czy ktoś z Panią/Panem mieszka -- dorosłe dziecko, rodzic?\n\nBo przegląd dotyczy całego domu, fajnie jakby widzieli.\n\n[Jeśli nikt -- umawiaj normalnie]",
-      "responses": [
-        {"label": "Ktoś mieszka -- będzie obecny", "next": "close_book"},
-        {"label": "Mieszkam sam/sama", "next": "close_book"}
-      ]
-    },
-
-
-    "close_benefit_condition": {
-      "name": "CLOSE: BENEFIT → CONDITION (Belfort In-Home)",
-      "say": "[IMIĘ], teraz żeby serwisant mógł przygotować NAJLEPSZĄ MOŻLIWĄ ofertę wymiany i żeby WYCENA Państwa urządzenia była KOMPLETNA -- oboje Państwo muszą być w domu.\n\nSerwisant omówi różne warianty i opcje finansowe, więc ważne żeby oboje widzieli pełny obraz.\n\nPani/Pan [MAŁŻONEK] też będzie w domu, prawda?\n\n[PRESUPOZYCJA: zakładaj TAK. Ton pewności, nie pytania]",
-      "responses": [
-        {"label": "Tak, oboje będziemy", "next": "close_book"},
-        {"label": "Mąż/żona w pracy", "next": "rebuttal_praca"},
-        {"label": "Ja sam/sama decyduję", "next": "rebuttal_sam_decyduje"},
-        {"label": "Jego/jej to nie obchodzi", "next": "rebuttal_nie_obchodzi"}
-      ]
-    },
-
-
     "rebuttal_praca": {
-      "name": "LOOP 1: W pracy",
-      "say": "Jasne! Właśnie dlatego pytam z wyprzedzeniem -- żeby trafić w termin kiedy oboje jesteście.\n\nNasi serwisanci pracują wieczorami i w weekendy -- dostosują się pod Was.\n\nKiedy oboje macie spokojny wieczór? Może sobota albo niedziela?\n\n[LOOPING: obróć obiekcję w close -- pytaj KIEDY, nie CZY]",
+      "name": "Rebuttal: w pracy",
+      "say": "Jasne, calkowicie rozumiem! Wlasnie dlatego pytam wczesniej -- zeby znalezc termin ktory pasuje obojgu. Nasi serwisanci pracuja tez wieczorami i w weekendy. Kiedy oboje Panstwo macie spokojniejszy wieczor -- moze sobota albo niedziela?",
       "responses": [
-        {"label": "OK, znajdziemy termin", "next": "close_book"},
-        {"label": "Na zmiany, trudno", "next": "rebuttal_zmiany"},
-        {"label": "Niech przyjdzie beze mnie", "next": "rebuttal_potem"}
+        { "label": "OK, znajdziemy termin", "next": "book_termin" },
+        { "label": "Na zmiany, trudno", "next": "rebuttal_zmiany" },
+        { "label": "Niech przyjdzie sam", "next": "rebuttal_niech_przyjdzie" }
       ]
     },
-
-
     "rebuttal_sam_decyduje": {
-      "name": "LOOP 2: Sam/sama decyduję",
-      "say": "Wierzę w stu procentach!\n\nAle proszę zobaczyć -- serwisant będzie omawiał wycenę, warianty wymiany, opcje rat. To decyzja finansowa.\n\nGdyby potem musiała Pani/Pan to tłumaczyć, a mąż/żona nie widział wyceny... wychodzi niepotrzebna dyskusja.\n\nJedna godzina razem -- i oboje macie pełen obraz. Lepsze to niż tydzień rozmów w domu, prawda?\n\n[LOOP: nie odpuszczaj. Ton rozsądku i troski]",
+      "name": "Rebuttal: sam decyduje",
+      "say": "Wierze Pani/Panu! Ale prosze zobaczyc -- serwisant bedzie omawial wycene Panstwa obecnego Rainbow, warianty wymiany, ewentualnie raty. To decyzja finansowa ktora dotyczy obojga Panstwa.\n\nGdyby potem musiala Pani to wszystko tlumaczyc mezowi... a on nie widzial wyceny, nie slyszal wariantow -- to potem wychodzi niepotrzebne 'ale dlaczego nie poczekaalas'.\n\nLepsza jest ta godzina razem niz potem tydzien dyskusji w domu, prawda? Znajdzmy termin kiedy oboje Panstwo maja chwile.",
       "responses": [
-        {"label": "OK, szukamy wspólnego terminu", "next": "close_book"},
-        {"label": "Nadal sam/sama", "next": "rebuttal_potem"}
+        { "label": "OK, wspolny termin", "next": "book_termin" },
+        { "label": "Nadal sam/sama", "next": "rebuttal_niech_przyjdzie" }
       ]
     },
-
-
     "rebuttal_nie_obchodzi": {
-      "name": "LOOP 3: Nie obchodzi go/jej",
-      "say": "Wie Pani/Pan co? Większość mężów i żon mówi dokładnie to samo PRZED wizytą.\n\nA potem jak widzą wycenę i co potrafi nowy model -- nagle są bardzo zainteresowani!\n\nNie musi być zainteresowany/a TERAZ. Wystarczy że będzie w domu. Godzinka.\n\nSobota albo niedziela -- co lepiej pasuje?",
+      "name": "Rebuttal: nie obchodzi",
+      "say": "Wie Pani/Pan co jest ciekawe? Wiekszosc mezow mowi tak samo przed wizyta. A potem jak widza ile jest wart ich stary Rainbow na wymiane i co potrafi nowy model -- to nagle sa bardzo zainteresowani!\n\nNie musi byc zainteresowany teraz -- wystarczy ze bedzie w domu. Godzinka i oboje Panstwo bedziecie wiedzieli na czym stoicie. Mozemy sie umowic na sobote albo niedziele?",
       "responses": [
-        {"label": "OK, spróbuję namówić", "next": "close_book"},
-        {"label": "Na pewno nie przyjdzie", "next": "rebuttal_potem"}
+        { "label": "OK, sprobuje namowic", "next": "book_termin" },
+        { "label": "Na pewno nie przyjdzie", "next": "rebuttal_niech_przyjdzie" }
       ]
     },
-
-
     "rebuttal_zmiany": {
-      "name": "LOOP 4: Praca zmianowa",
-      "say": "Rozumiem, to bywa trudne.\n\nA kiedy w najbliższych DWÓCH TYGODNIACH macie taki wieczór kiedy oboje jesteście w domu? Jakiś wolny dzień? Weekend?\n\nDostosujemy się KOMPLETNIE pod Państwa grafik.",
+      "name": "Rebuttal: praca zmianowa",
+      "say": "Rozumiem, to bywa trudne. A kiedy w najblizszych dwoch tygodniach macie taki wieczor, kiedy oboje Panstwo jestescie w domu? Moze jakis wolny dzien? Dostosujemy sie calkowicie pod Panstwa grafik.",
       "responses": [
-        {"label": "Znajdziemy za tydzień-dwa", "next": "close_book"},
-        {"label": "Ciężko ustalić", "next": "rebuttal_final"}
+        { "label": "Za tydzien-dwa", "next": "book_termin" },
+        { "label": "Ciezko ustalic", "next": "rebuttal_ostateczny" }
       ]
     },
-
-
-    "rebuttal_potem": {
-      "name": "LOOP 5: Niech przyjdzie sam",
-      "say": "[IMIĘ], naprawdę chcę żeby ta wizyta miała SENS.\n\nSerwisant wycenia urządzenie, pokazuje różnicę, omawia warianty finansowe. Jeśli mąż/żona tego NIE ZOBACZY na własne oczy -- nie może podjąć decyzji. I umawiamy się drugi raz -- strata czasu i Państwa, i nasza.\n\nJedna wspólna godzina -- i oboje wiecie na czym stoicie. Prawda?\n\n[LOOP: wróć do BENEFIT-CONDITION. Nie odpuszczaj!]",
+    "rebuttal_niech_przyjdzie": {
+      "name": "Rebuttal: niech przyjdzie sam",
+      "say": "Pani/Panie [IMIE], naprawde chce zeby ta wizyta miala dla Panstwa sens. Serwisant bedzie wycenial Panstwa stary Rainbow, pokazywal roznice z nowym modelem, omawial warianty finansowe.\n\nJesli maz tego nie zobaczy na wlasne oczy -- to potem nie moze podjac decyzji, bo nie ma pelnego obrazu. I spotykamy sie jeszcze raz, a to strata czasu i dla Panstwa, i dla nas.\n\nJedna wspolna godzina -- i oboje Panstwo macie pelna wiedze. Kiedy oboje bedziecie w domu?",
       "responses": [
-        {"label": "OK, przekonałeś -- szukamy terminu", "next": "close_book"},
-        {"label": "Nadal sam/sama", "next": "rebuttal_final"}
+        { "label": "OK, razem", "next": "book_termin" },
+        { "label": "Nadal sam/sama", "next": "rebuttal_ostateczny" }
       ]
     },
-
-
-    "rebuttal_final": {
-      "name": "OSTATNI LOOP: Callback",
-      "say": "Rozumiem. Zróbmy tak:\n\nNiech Pani/Pan porozmawia z mężem/żoną kiedy mają wolny wieczór, a ja zadzwonię JUTRO o tej samej porze i ustalimy termin.\n\nPasuje?\n\n[NIGDY nie umawiaj na jedną nogę! Callback!]",
+    "rebuttal_ostateczny": {
+      "name": "Rebuttal: callback",
+      "say": "Rozumiem. Zrobmy tak -- niech Pani/Pan porozmawia z mezem/zona kiedy ma wolny wieczor, a ja zadzwonie do Pani/Pana jutro o tej samej porze i ustalimy termin. Pasuje?",
+      "tip": "NIGDY NIE UMAWIAJ NA JEDNA NOGE! Callback!",
       "responses": [
-        {"label": "OK, zadzwoń jutro -- CALLBACK", "next": "callback_scheduled"},
-        {"label": "Nie, rezygnuję", "next": "end_not_interested"}
+        { "label": "OK, zadzwon jutro", "next": "callback_scheduled" },
+        { "label": "Nie, rezygnuje", "next": "end_not_interested" }
       ]
     },
-
-
-    "close_book": {
-      "name": "CLOSE: Umawianie terminu",
-      "say": "Doskonale! Kiedy oboje Państwo będą w domu?\n\nSerwisanci pracują:\n- Pon-Pt: 10:00, 14:00, 16:00, 18:00\n- Sobota: 10:00, 13:00, 16:00\n- Niedziela: 11:00, 14:00, 17:00\n\nWolą Państwo W TYGODNIU wieczorem czy WEEKEND?\n\n[KONTROLA: dwie opcje, nie otwarte pytanie]",
+    "book_termin": {
+      "name": "Umawianie terminu",
+      "say": "Swietnie! Kiedy oboje Panstwo beda w domu?\n\nSerwisanci pracuja:\nPon-Pt: 10:00, 14:00, 16:00, 18:00\nSobota: 10:00, 13:00, 16:00\nNiedziela: 11:00, 14:00, 17:00",
       "responses": [
-        {"label": "W tygodniu wieczorem", "next": "close_confirm"},
-        {"label": "Weekend", "next": "close_confirm"},
-        {"label": "Dziś / Jutro", "next": "close_confirm"}
+        { "label": "W tygodniu wieczorem", "next": "confirm" },
+        { "label": "Weekend", "next": "confirm" },
+        { "label": "Dzis / Jutro", "next": "confirm" }
       ]
     },
-
-
-    "close_confirm": {
-      "name": "CLOSE: Potwierdzenie + 3 warunki",
-      "say": "Umawiamy na [DZIEŃ] o [GODZINA].\n\nAdres: [POTWIERDŹ ADRES] -- zgadza się?\n\nTeraz trzy ważne rzeczy:\n\n1. Proszę PRZYGOTOWAĆ Państwa Rainbow -- serwisant musi go obejrzeć i wycenić.\n\n2. Proszę NIE ZAPRASZAĆ sąsiadów -- to indywidualna oferta.\n\n3. Proszę żeby [MAŁŻONEK] NA PEWNO był/a w domu -- to ważne żeby oboje widzieli ofertę.\n\nUmówione? Prześlę SMS z potwierdzeniem!\n\n[WYŚLIJ SMS!]",
+    "confirm": {
+      "name": "Potwierdzenie + 3 warunki",
+      "say": "Umawiamy na [DZIEN] o [GODZINA]. Adres: [ADRES] -- zgadza sie?\n\nJeszcze trzy wazne rzeczy:\n1. Prosze PRZYGOTOWAC Panstwa Rainbow -- serwisant musi obejrzec.\n2. Prosze NIE ZAPRASZAC sasiadow -- to indywidualna oferta.\n3. Prosze zeby [MALZONEK] NA PEWNO byl/a w domu.\n\nUmowione? Przesle SMS z potwierdzeniem!",
+      "tip": "WYSLIJ SMS potwierdzajacy!",
       "responses": [
-        {"label": "UMÓWIONO (oboje potwierdzeni) - Zapisz", "next": null}
+        { "label": "UMOWIONO - Zapisz", "next": null }
       ]
     },
-
-
     "objection_cena": {
-      "name": "Obiekcja: Cena",
-      "say": "Przegląd i wycena -- BEZPŁATNE. Zero kosztów.\n\nA jeśli chodzi o wymianę -- to zależy od stanu Państwa urządzenia. Dlatego serwisant musi je obejrzeć i wycenić.\n\nWartość starego zalicza się na poczet nowego. Szczegóły poda serwisant.\n\nNic Państwo nie tracą -- a mogą się pozytywnie zaskoczyć ile jest wart Państwa Rainbow. Ma to sens?",
+      "name": "Obiekcja: cena",
+      "say": "Przeglad i wycena sa calkowicie bezplatne. Jesli chodzi o wymiane -- to zalezy od stanu Panstwa obecnego urzadzenia. Dlatego serwisant musi je obejrzec i wycenic.\n\nWartosc starego Rainbow zalicza sie na poczet nowego -- szczegoly poda serwisant na miejscu. Warto zobaczyc, bo to nic nie kosztuje!",
       "responses": [
-        {"label": "OK, umów", "next": "body_urgency"},
-        {"label": "Za drogie", "next": "end_not_interested"}
+        { "label": "OK, umow przeglad", "next": "kwalifikacja_model" },
+        { "label": "Nie stac mnie", "next": "end_not_interested" }
       ]
     },
-
-    "objection_think": {
-      "name": "Obiekcja: Muszę pomyśleć",
-      "say": "[IMIĘ], jasne! Ale proszę zobaczyć -- przegląd jest BEZPŁATNY, zero ryzyka.\n\nUmówmy termin -- a gdyby coś się zmieniło, można przesunąć. Ale terminy serwisantów szybko się zapełniają.\n\nLepiej zarezerwować teraz i mieć spokój. Brzmi fair?",
+    "objection_czas": {
+      "name": "Obiekcja: czas",
+      "say": "Rozumiem ze Panstwo sa zajeci. Wizyta trwa okolo godziny. Moze weekend albo wieczor -- kiedy Panstwo maja spokojniej?",
       "responses": [
-        {"label": "OK, umów", "next": "close_malzonek"},
-        {"label": "Zadzwońcie za kilka dni", "next": "callback_request"},
-        {"label": "Nie, dziękuję", "next": "end_not_interested"}
+        { "label": "Weekend / wieczor", "next": "book_termin" },
+        { "label": "Naprawde nie mam czasu", "next": "callback" }
       ]
     },
-
-    "objection_last_chance": {
-      "name": "Obiekcja: Ostatnia szansa",
-      "say": "[IMIĘ], rozumiem. Tylko jedno na koniec:\n\nPaństwa stary Rainbow MA WARTOŚĆ -- i ta wartość z czasem spada. Im dłużej Państwo czekają, tym mniej jest wart na wymianę.\n\nPrzegląd jest za darmo. Serwisant wyceni, pokaże ofertę. Nie pasuje -- nic nie tracą Państwo.\n\nCzy warto poświęcić godzinę żeby się dowiedzieć? Prawda?\n\n[LOOPING: obiekcja → close]",
+    "objection_dziala": {
+      "name": "Obiekcja: dziala",
+      "say": "To swietnie! Im w lepszym stanie Panstwa urzadzenie, tym wyzsza jego wartosc przy wymianie. Warto wycenic teraz, bo programy wymian nie trwaja wiecznie.\n\nA przeglad i tak jest bezplatny -- wiec Panstwa nic to nie kosztuje.",
       "responses": [
-        {"label": "OK, umów przegląd", "next": "close_malzonek"},
-        {"label": "Nie, naprawdę nie", "next": "end_not_interested"}
+        { "label": "OK, niech wyceni", "next": "kwalifikacja_model" },
+        { "label": "Nie potrzebuje", "next": "end_not_interested" }
       ]
     },
-
-
-    "callback_request": {
-      "name": "Callback: Kiedy zadzwonić?",
-      "say": "Jasne! Kiedy mogę oddzwonić? Jutro, pojutrze?",
+    "objection_pomyslec": {
+      "name": "Obiekcja: pomyslec",
+      "say": "Oczywiscie! Przeglad jest bezplatny, wiec nie ma zadnego ryzyka. Umowmy termin -- a gdyby cos sie zmienilo, zawsze mozna przeniesc. Lepsza rezerwacja teraz, bo terminy serwisantow szybko sie zapelniaja.",
       "responses": [
-        {"label": "Jutro", "next": "callback_scheduled"},
-        {"label": "Za kilka dni", "next": "callback_scheduled"},
-        {"label": "Ja zadzwonię", "next": "end_callback_client"}
+        { "label": "OK, umow", "next": "kwalifikacja_model" },
+        { "label": "Za kilka dni", "next": "callback" },
+        { "label": "Nie, dziekuje", "next": "end_not_interested" }
+      ]
+    },
+    "callback": {
+      "name": "Callback: kiedy",
+      "say": "Jasne! Kiedy moge oddzwonic? Jutro, pojutrze?",
+      "responses": [
+        { "label": "Jutro", "next": "callback_scheduled" },
+        { "label": "Za kilka dni", "next": "callback_scheduled" },
+        { "label": "Ja zadzwonie", "next": "end_callback_client" }
       ]
     },
     "callback_scheduled": {
-      "name": "Callback zaplanowany",
-      "say": "Super! Zapisuję i oddzwonię w ustalonym terminie.\n\nDziękuję, do usłyszenia!",
+      "name": "Callback zapisany",
+      "say": "Super! Zapisuje i oddzwonie w ustalonym terminie. Dziekuje, do uslyszenia!",
       "responses": [
-        {"label": "CALLBACK - Zapisz w Trello", "next": null}
+        { "label": "ODDZWONIC - Zapisz", "next": null }
       ]
     },
-
-
     "end_wrong_number": {
-      "name": "Zły numer",
-      "say": "Przepraszam za pomyłkę. Miłego dnia!",
+      "name": "Zly numer",
+      "say": "Przepraszam za pomylke. Milego dnia!",
       "responses": [
-        {"label": "ZŁY NUMER - Zapisz", "next": null}
+        { "label": "ZLY NUMER - Zapisz", "next": null }
       ]
     },
     "end_not_interested": {
       "name": "Nie zainteresowany",
-      "say": "Rozumiem. Dziękuję za poświęcony czas. Miłego dnia!",
+      "say": "Rozumiem. Dziekuje za poswiecony czas. Milego dnia!",
       "responses": [
-        {"label": "NIE ZAINTERESOWANY - Zapisz", "next": null}
+        { "label": "NIE ZAINTERESOWANY", "next": null }
       ]
     },
     "end_no_rainbow": {
       "name": "Nie ma Rainbow",
-      "say": "Rozumiem, ten program jest dla obecnych właścicieli Rainbow.\n\nGdyby chcieli Państwo zobaczyć prezentację nowego Rainbow -- mogę umówić bezpłatny pokaz. Miłego dnia!",
+      "say": "Rozumiem, program jest dla obecnych wlascicieli Rainbow. Moge umowic bezplatny pokaz nowego. Milego dnia!",
       "responses": [
-        {"label": "NIE MA RAINBOW - Zapisz", "next": null}
+        { "label": "NIE MA RAINBOW", "next": null }
       ]
     },
     "end_callback_client": {
       "name": "Klient oddzwoni",
-      "say": "Oczywiście! Nasz numer: [NUMER FIRMY]\n\nCzekam na telefon. Miłego dnia!",
+      "say": "Oczywiscie! Nasz numer: [NUMER FIRMY]. Czekam na telefon. Milego dnia!",
       "responses": [
-        {"label": "KLIENT ODDZWONI - Zapisz", "next": null}
+        { "label": "KLIENT ODDZWONI", "next": null }
       ]
     }
   }

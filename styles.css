@@ -64,9 +64,9 @@ body {
 
 #script-text-box {
     flex: 1;
-    min-height: 0;
+    min-height: 100px;
     overflow-y: auto;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
 }
 
 .speech-box {
@@ -111,17 +111,12 @@ body {
     margin-bottom: 8px;
 }
 
-#response-buttons {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 12px;
-}
-
 /* Response grid - always 2 columns */
+#response-buttons,
 .response-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 15px;
+    gap: 10px;
 }
 
 .response-btn {

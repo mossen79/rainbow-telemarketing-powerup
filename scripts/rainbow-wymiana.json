@@ -5,7 +5,7 @@
   "steps": {
     "start": {
       "name": "Powitanie",
-      "say": "Halo, dzien dobry! Czy rozmawiam z Pania/Panem [IMIE]?",
+      "say": "Halo, dzien dobry!",
       "tip": "Usmiech! Energia! To jest dobra wiadomosc dla klienta!",
       "responses": [
         { "label": "Tak, slucham", "next": "intro" },
@@ -16,7 +16,7 @@
     },
     "intro": {
       "name": "Przedstawienie",
-      "say": "Dzien dobry Pani/Panie [IMIE]! Mam na imie [TWOJE IMIE], dzwonie z firmy Rainbow. Zostawili Panstwo kontakt na naszej stronie w sprawie wymiany odkurzacza -- pamietaja Panstwo?",
+      "say": "Dzien dobry! Dzwonie z firmy Rainbow. Zostawili Panstwo kontakt na naszej stronie w sprawie wymiany odkurzacza -- pamietaja Panstwo?",
       "responses": [
         { "label": "Tak, pamietam", "next": "pitch" },
         { "label": "Nie pamietam", "next": "pitch" },
@@ -62,7 +62,7 @@
     },
     "dwie_nogi": {
       "name": "Dwie nogi (presupozycja)",
-      "say": "Pani/Panie [IMIE], jeszcze jedno. Zeby serwisant mogl W PELNI WYCENIC Panstwa obecne urzadzenie i przygotowac NAJLEPSZA MOZLIWA OFERTE WYMIANY -- potrzebujemy zeby oboje Panstwo byli w domu.\n\nSerwisant omowi z Panstwem rozne warianty, wiec wazne zeby oboje mogli Panstwo zadecydowac na spokojnie.\n\nPan/Pani [IMIE MALZONKA] tez bedzie, prawda?",
+      "say": "Jeszcze jedno. Zeby serwisant mogl W PELNI WYCENIC Panstwa obecne urzadzenie i przygotowac NAJLEPSZA MOZLIWA OFERTE WYMIANY -- potrzebujemy zeby oboje Panstwo byli w domu.\n\nSerwisant omowi z Panstwem rozne warianty, wiec wazne zeby oboje mogli Panstwo zadecydowac na spokojnie.\n\nMaz/zona tez bedzie, prawda?",
       "tip": "PRESUPOZYCJA BELFORDA: zakladasz ze TAK! Ton pewnosci, nie pytania.",
       "responses": [
         { "label": "Tak, oboje bedziemy", "next": "book_termin" },
@@ -106,7 +106,7 @@
     },
     "rebuttal_niech_przyjdzie": {
       "name": "Rebuttal: niech przyjdzie sam",
-      "say": "Pani/Panie [IMIE], naprawde chce zeby ta wizyta miala dla Panstwa sens. Serwisant bedzie wycenial Panstwa stary Rainbow, pokazywal roznice z nowym modelem, omawial warianty finansowe.\n\nJesli maz tego nie zobaczy na wlasne oczy -- to potem nie moze podjac decyzji, bo nie ma pelnego obrazu. I spotykamy sie jeszcze raz, a to strata czasu i dla Panstwa, i dla nas.\n\nJedna wspolna godzina -- i oboje Panstwo macie pelna wiedze. Kiedy oboje bedziecie w domu?",
+      "say": "Naprawde chce zeby ta wizyta miala dla Panstwa sens. Serwisant bedzie wycenial Panstwa stary Rainbow, pokazywal roznice z nowym modelem, omawial warianty finansowe.\n\nJesli maz tego nie zobaczy na wlasne oczy -- to potem nie moze podjac decyzji, bo nie ma pelnego obrazu. I spotykamy sie jeszcze raz, a to strata czasu i dla Panstwa, i dla nas.\n\nJedna wspolna godzina -- i oboje Panstwo macie pelna wiedze. Kiedy oboje bedziecie w domu?",
       "responses": [
         { "label": "OK, razem", "next": "book_termin" },
         { "label": "Nadal sam/sama", "next": "rebuttal_ostateczny" }
@@ -132,7 +132,7 @@
     },
     "confirm": {
       "name": "Potwierdzenie + 3 warunki",
-      "say": "Umawiamy na [DZIEN] o [GODZINA]. Adres: [ADRES] -- zgadza sie?\n\nJeszcze trzy wazne rzeczy:\n1. Prosze PRZYGOTOWAC Panstwa Rainbow -- serwisant musi obejrzec.\n2. Prosze NIE ZAPRASZAC sasiadow -- to indywidualna oferta.\n3. Prosze zeby [MALZONEK] NA PEWNO byl/a w domu.\n\nUmowione? Przesle SMS z potwierdzeniem!",
+      "say": "Umawiamy na [DZIEN] o [GODZINA]. Adres: [ADRES] -- zgadza sie?\n\nJeszcze trzy wazne rzeczy:\n1. Prosze PRZYGOTOWAC Panstwa Rainbow -- serwisant musi obejrzec.\n2. Prosze NIE ZAPRASZAC sasiadow -- to indywidualna oferta.\n3. Prosze zeby maz/zona NA PEWNO byl/a w domu.\n\nUmowione? Przesle SMS z potwierdzeniem!",
       "tip": "WYSLIJ SMS potwierdzajacy!",
       "responses": [
         { "label": "UMOWIONO - Zapisz", "next": null }

@@ -10,32 +10,60 @@ TrelloPowerUp.initialize({
     appKey: TRELLO_APP_KEY,
     appName: 'Rainbow Telemarketing Scripts',
     'card-buttons': function (t, options) {
-        return [{
-            icon: 'https://mossen79.github.io/rainbow-telemarketing-powerup/icon-powerup.svg',
-            text: 'Skrypt rozmowy',
-            callback: function (t) {
-                return t.modal({
-                    url: './script-popup.html',
-                    fullscreen: true,
-                    title: 'Rainbow Telemarketing Scripts'
-                });
+        return [
+            {
+                icon: 'https://mossen79.github.io/rainbow-telemarketing-powerup/icon-powerup.svg',
+                text: 'WYMIANA',
+                callback: function (t) {
+                    return t.modal({
+                        url: './script-popup.html?campaign=wymiana',
+                        fullscreen: true,
+                        title: 'WYMIANA Rainbow'
+                    });
+                }
+            },
+            {
+                icon: 'https://mossen79.github.io/rainbow-telemarketing-powerup/icon-powerup.svg',
+                text: 'Odkurzacz (nowi)',
+                callback: function (t) {
+                    return t.modal({
+                        url: './script-popup.html?campaign=odkurzacz',
+                        fullscreen: true,
+                        title: 'Odkurzacz Rainbow'
+                    });
+                }
             }
-        }];
+        ];
     },
     'card-detail-badges': function(t, options) {
-        return [{
-            title: 'Skrypt rozmowy',
-            text: 'Rozpocznij rozmowę',
-            icon: 'https://mossen79.github.io/rainbow-telemarketing-powerup/icon-powerup.svg',
-            color: 'blue',
-            callback: function(t) {
-                return t.modal({
-                    url: './script-popup.html',
-                    fullscreen: true,
-                    title: 'Rainbow Telemarketing Scripts'
-                });
+        return [
+            {
+                title: 'WYMIANA',
+                text: 'Skrypt WYMIANA',
+                icon: 'https://mossen79.github.io/rainbow-telemarketing-powerup/icon-powerup.svg',
+                color: 'blue',
+                callback: function(t) {
+                    return t.modal({
+                        url: './script-popup.html?campaign=wymiana',
+                        fullscreen: true,
+                        title: 'WYMIANA Rainbow'
+                    });
+                }
+            },
+            {
+                title: 'Odkurzacz',
+                text: 'Skrypt Odkurzacz',
+                icon: 'https://mossen79.github.io/rainbow-telemarketing-powerup/icon-powerup.svg',
+                color: 'green',
+                callback: function(t) {
+                    return t.modal({
+                        url: './script-popup.html?campaign=odkurzacz',
+                        fullscreen: true,
+                        title: 'Odkurzacz Rainbow'
+                    });
+                }
             }
-        }];
+        ];
     },
     'show-settings': function (t, options) {
         return t.popup({

@@ -172,11 +172,12 @@
       ]
     },
     "callback": {
-      "name": "Callback: kiedy",
-      "say": "Jasne! Kiedy moge oddzwonic? Jutro, pojutrze?",
+      "name": "Callback",
+      "say": "Jasne! Oddzwonie do Pani/Pana jutro -- przed poludniem czy po poludniu bardziej pasuje?",
+      "tip": "PRESUPOZYCJA: nie pytasz CZY, tylko KIEDY jutro! Wybor miedzy dwoma = oba OK.",
       "responses": [
-        { "label": "Jutro", "next": "callback_scheduled" },
-        { "label": "Za kilka dni", "next": "callback_scheduled" },
+        { "label": "Przed poludniem", "next": "callback_scheduled" },
+        { "label": "Po poludniu", "next": "callback_scheduled" },
         { "label": "Ja zadzwonie", "next": "end_callback_client" }
       ]
     },

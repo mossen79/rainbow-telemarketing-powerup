@@ -429,6 +429,72 @@ body {
     border-color: #0079bf;
 }
 
+/* Call timer bar */
+#call-timer-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: transparent;
+    z-index: 999;
+    transition: background-color 1s ease;
+}
+
+#call-timer-bar.timer-green {
+    background: #61bd4f;
+}
+
+#call-timer-bar.timer-yellow {
+    background: #f2d600;
+}
+
+#call-timer-bar.timer-red {
+    background: #eb5a46;
+    animation: pulse-red 1s ease-in-out infinite;
+}
+
+@keyframes pulse-red {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+}
+
+#call-timer-info {
+    position: fixed;
+    top: 5px;
+    right: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #5e6c84;
+    z-index: 999;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+}
+
+#call-timer-info.visible {
+    opacity: 1;
+}
+
+.call-stats {
+    text-align: center;
+    margin-top: 16px;
+    font-size: 15px;
+    color: #5e6c84;
+}
+
+.call-stats .duration {
+    font-size: 28px;
+    font-weight: 700;
+    color: #172b4d;
+    margin-bottom: 4px;
+}
+
+.call-stats .average {
+    font-size: 13px;
+    color: #5e6c84;
+}
+
 /* Responsive - większe przyciski na małych ekranach */
 @media (max-width: 600px) {
     .response-grid {

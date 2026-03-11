@@ -1,9 +1,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rainbow Telemarketing Scripts</title>
-    <link rel="stylesheet" href="styles.css?v=7">
+    <link rel="stylesheet" href="styles.css?v=8">
     <script src="https://p.trellocdn.com/power-up.min.js"></script>
 </head>
 <body>
+    <div id="call-timer-bar"></div>
+    <div id="call-timer-info"></div>
     <div id="script-container">
         <div id="script-header">
             <h2 id="script-title">Skrypt Rozmowy</h2>
@@ -84,6 +86,79 @@
         }
 
         let SCRIPT_DATA = (campaignParam && SCRIPTS[campaignParam]) ? SCRIPTS[campaignParam] : SCRIPTS.odkurzacz;
+
+        // === CALL TIMER ===
+        class CallTimer {
+            constructor() {
+                this.bar = document.getElementById('call-timer-bar');
+                this.info = document.getElementById('call-timer-info');
+                this.startTime = null;
+                this.intervalId = null;
+                this.elapsed = 0;
+            }
+
+            start() {
+                if (this.startTime) return; // already running
+                this.startTime = Date.now();
+                this.bar.className = 'timer-green';
+                this.info.classList.add('visible');
+                this.intervalId = setInterval(() => this.tick(), 1000);
+            }
+
+            tick() {
+                this.elapsed = Math.floor((Date.now() - this.startTime) / 1000);
+                const min = Math.floor(this.elapsed / 60);
+                const sec = this.elapsed % 60;
+                this.info.textContent = `${min}:${sec.toString().padStart(2, '0')}`;
+
+                if (this.elapsed < 180) {
+                    this.bar.className = 'timer-green';
+                } else if (this.elapsed < 300) {
+                    this.bar.className = 'timer-yellow';
+                } else {
+                    this.bar.className = 'timer-red';
+                }
+            }
+
+            stop() {
+                if (this.intervalId) {
+                    clearInterval(this.intervalId);
+                    this.intervalId = null;
+                }
+                return this.elapsed;
+            }
+
+            getElapsed() {
+                return this.elapsed;
+            }
+
+            static formatDuration(seconds) {
+                const m = Math.floor(seconds / 60);
+                const s = seconds % 60;
+                return `${m}:${s.toString().padStart(2, '0')}`;
+            }
+
+            static saveCallDuration(seconds) {
+                if (seconds < 5) return; // skip accidental clicks
+                try {
+                    let history = JSON.parse(localStorage.getItem('call_durations') || '[]');
+                    history.push(seconds);
+                    if (history.length > 10) history = history.slice(-10);
+                    localStorage.setItem('call_durations', JSON.stringify(history));
+                } catch(e) {}
+            }
+
+            static getAverage() {
+                try {
+                    const history = JSON.parse(localStorage.getItem('call_durations') || '[]');
+                    if (history.length === 0) return null;
+                    const sum = history.reduce((a, b) => a + b, 0);
+                    return Math.round(sum / history.length);
+                } catch(e) { return null; }
+            }
+        }
+
+        const callTimer = new CallTimer();
 
         class ScriptEngine {
             constructor(scriptData) {
@@ -230,22 +305,32 @@
             }
 
             handleResponse(index) {
+                callTimer.start(); // starts on first click, noop after
                 const result = this.engine.selectResponse(index);
 
                 if (result.end) {
-                    this.showSimpleEndScreen(result.outcome);
+                    const elapsed = callTimer.stop();
+                    CallTimer.saveCallDuration(elapsed);
+                    this.showSimpleEndScreen(result.outcome, elapsed);
                 } else {
                     this.render();
                 }
             }
             
-            showSimpleEndScreen(outcome) {
+            showSimpleEndScreen(outcome, elapsed) {
                 const container = document.getElementById('script-content');
+                const duration = CallTimer.formatDuration(elapsed || 0);
+                const avg = CallTimer.getAverage();
+                const avgText = avg ? `Srednia z ostatnich 10: ${CallTimer.formatDuration(avg)}` : '';
                 // Czyścimy tylko część skryptową, notatki są poniżej w osobnym divie
                 container.innerHTML = `
                     <div class="end-screen">
-                        <h3>✅ Rozmowa zakończona</h3>
+                        <h3>Rozmowa zakonczona</h3>
                         <p><strong>Wynik:</strong> ${outcome}</p>
+                        <div class="call-stats">
+                            <div class="duration">${duration}</div>
+                            ${avgText ? `<div class="average">${avgText}</div>` : ''}
+                        </div>
                         <p style="margin-top: 20px;">Skopiuj notatki i zamknij okno.</p>
                     </div>
                 `;
@@ -335,9 +420,14 @@
                     </div>
                 `;
                 scriptUI = new ScriptUI(scriptEngine);
-                // Wyczyść notatki przy zmianie kampanii
+                // Wyczyść notatki i reset timera przy zmianie kampanii
                 const notes = document.getElementById('notes-textarea');
                 if (notes) notes.value = '';
+                callTimer.stop();
+                callTimer.startTime = null;
+                callTimer.elapsed = 0;
+                document.getElementById('call-timer-bar').className = '';
+                document.getElementById('call-timer-info').classList.remove('visible');
             });
 
             // Czerwony guzik "Wracam do tematu" - petla na tym samym kroku

@@ -1,6 +1,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rainbow Telemarketing Scripts</title>
-    <link rel="stylesheet" href="styles.css?v=8">
+    <link rel="stylesheet" href="styles.css?v=9">
     <script src="https://p.trellocdn.com/power-up.min.js"></script>
 </head>
 <body>
@@ -9,10 +9,9 @@
     <div id="script-container">
         <div id="script-header">
             <h2 id="script-title">Skrypt Rozmowy</h2>
-            <div id="campaign-selector-box" style="margin: 8px 0;">
-                <select id="campaign-selector" style="width:100%; padding:10px; font-size:16px; border-radius:6px; border:2px solid #4a90d9; background:#2a3a4a; color:#fff; cursor:pointer;">
-                    <option value="odkurzacz">Odkurzacz Rainbow (nowi klienci)</option>
-                    <option value="wymiana">WYMIANA stary na nowy (Belfort)</option>
+            <div id="campaign-selector-box" style="display:none;">
+                <select id="campaign-selector">
+                    <option value="wymiana" selected>WYMIANA stary na nowy (Belfort)</option>
                 </select>
             </div>
         </div>
@@ -85,7 +84,7 @@
                 .replace(/\[NUMER FIRMY\]/g, clientTelefon || '[NUMER FIRMY]');
         }
 
-        let SCRIPT_DATA = (campaignParam && SCRIPTS[campaignParam]) ? SCRIPTS[campaignParam] : SCRIPTS.odkurzacz;
+        let SCRIPT_DATA = (campaignParam && SCRIPTS[campaignParam]) ? SCRIPTS[campaignParam] : SCRIPTS.wymiana;
 
         // === CALL TIMER ===
         class CallTimer {

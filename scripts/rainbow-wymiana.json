@@ -1,6 +1,6 @@
 {
   "name": "WYMIANA Rainbow",
-  "version": "4.0_Edycja_Belforta",
+  "version": "4.1_Edycja_Belforta_Panic_Button",
   "campaign": "wymiana",
   "steps": {
     "start": {
@@ -20,7 +20,7 @@
       "responses": [
         { "label": "Tak / Zgadza się", "next": "pitch" },
         { "label": "Nie pamiętam", "next": "pitch" },
-        { "label": "Nie mam czasu", "next": "callback" },
+        { "label": "Nie mam czasu", "next": "objection_czas" },
         { "label": "Nie mam Rainbow", "next": "end_no_rainbow" }
       ]
     },
@@ -30,9 +30,36 @@
       "tip": "Mów z entuzjazmem. To Ty masz dla nich świetną wiadomość, nie odwrotnie.",
       "responses": [
         { "label": "Tak / Może", "next": "kwalifikacja_model" },
-        { "label": "Ile kosztuje?", "next": "objection_cena" },
+        { "label": "🔴 PANIC: Ile to kosztuje?", "next": "panic_cena_poziom_1" },
         { "label": "Muszę pomyśleć", "next": "objection_pomyslec" },
         { "label": "Nie, dziękuję", "next": "end_not_interested" }
+      ]
+    },
+    "panic_cena_poziom_1": {
+      "name": "PANIC 1: Pyta z ciekawości",
+      "say": "Wybierz jeden z wariantów w zależności od flow rozmowy:\n\n[OPCJA 1 - BELFORT: Defleksja]\n\"Rozumiem, to bardzo fair pytanie. Ale niech mi Pani powie — czy idea systemu, który wykorzystuje wodę, żeby usunąć roztocza i brud ma dla Pani sens? Podoba się Pani ten pomysł? (TAK) Super, więc inwestycja zależy od tego, na ile wycenimy stary sprzęt na miejscu.\"\n\n[OPCJA 2 - DAN LOK: Odwrócenie]\n\"Zanim odpowiem — niech mi Pani powie jedno. Gdyby dopłata była odpowiednia, czy nowy Rainbow to jest sprzęt, który chciałaby Pani mieć w domu? (TAK) Właśnie. Więc to ustalimy podczas pokazu.\"\n\n[OPCJA 3 - BÓL / OSZCZĘDNOŚĆ]\n\"Za chwilę do tego dojdziemy. Ale powiedziałaby mi Pani, ile rocznie wydajecie na leki na alergię albo chemię do sprzątania? (ODPOWIEDŹ) Właśnie. Bo nowy Rainbow docelowo oszczędza pieniądze i zdrowie, a oddanie starego obniża koszt.\"",
+      "tip": "Po przeczytaniu wybranej opcji ZAWSZE płynnie zmień temat pytając o sprzęt. Przejmij kontrolę!",
+      "responses": [
+        { "label": "Odpuścił -> Wróć do skryptu", "next": "kwalifikacja_model" },
+        { "label": "🔴 DALEJ NACISKA (Chce kwoty)", "next": "panic_cena_poziom_2" }
+      ]
+    },
+    "panic_cena_poziom_2": {
+      "name": "PANIC 2: Dalej naciska (Eskalacja)",
+      "say": "\"Rozumiem, że chce Pani wiedzieć chociaż orientacyjnie. Mogę powiedzieć tyle — nowy Rainbow to sprzęt medyczny, inwestycja na lata. Ale dopóki serwisant nie zobaczy Pani starego urządzenia i nie wyceni, ile tysięcy możemy za niego odliczyć, każda liczba będzie bez kontekstu. Naprawdę warto zobaczyć to na żywo, bo wycena nic nie kosztuje.\"",
+      "tip": "Pełen spokój. Pokazujesz, że nie rzucasz liczbami w ciemno, bo dbasz o jej portfel (odliczenie za stary sprzęt).",
+      "responses": [
+        { "label": "Odpuścił -> Wróć do skryptu", "next": "kwalifikacja_stan" },
+        { "label": "🔴 DALEJ NACISKA (Chce wiedzieć TERAZ)", "next": "panic_cena_poziom_3" }
+      ]
+    },
+    "panic_cena_poziom_3": {
+      "name": "PANIC 3: Agresywnie żąda ceny (Broń Ostateczna)",
+      "say": "Wykorzystaj jedną z dwóch najsilniejszych ram:\n\n[OPCJA 1 - SKRYPT OSZUŚCI]\n\"Świetnie, że Pani pyta! Bo kryje się za tym pułapka. Firma Rainbow NIGDY nie podaje ceny wymiany przez telefon. Gdyby usłyszała Pani kwotę przez słuchawkę, ma Pani pewność, że rozmawia z OSZUSTAMI. Serwisant musi na żywo ocenić stan starego sprzętu ze względów bezpieczeństwa i procedur.\"\n\n[OPCJA 2 - TRÓJSTOPNIOWA ESKALACJA]\n\"Szanuję to, że chce Pani wiedzieć. Powiem tak — nowy system to inwestycja rzędu kilkunastu tysięcy złotych, OD CZEGO ODLICZAMY stary sprzęt. Wiem, że to brzmi jak dużo. Ale 95% naszych klientów po zobaczeniu różnicy na żywo mówi 'teraz rozumiem dlaczego'. Dajmy sobie 40 minut — jak się nie opłaci, podziękujemy sobie. Fair?\"",
+      "tip": "To jest granica. Jeśli to nie zadziała, to znaczy, że klient nie ma budżetu i nie ma sensu marnować czasu serwisanta.",
+      "responses": [
+        { "label": "Zrozumiał -> Wróć do skryptu", "next": "kwalifikacja_malzonek" },
+        { "label": "Nie stać mnie / Rozłącza się", "next": "end_not_interested" }
       ]
     },
     "kwalifikacja_model": {
@@ -41,7 +68,8 @@
       "tip": "ZAPISZ model i rok!",
       "responses": [
         { "label": "Podał model/rok", "next": "kwalifikacja_stan" },
-        { "label": "Nie pamięta", "next": "kwalifikacja_stan" }
+        { "label": "Nie pamięta", "next": "kwalifikacja_stan" },
+        { "label": "🔴 PANIC: Ile to kosztuje?", "next": "panic_cena_poziom_1" }
       ]
     },
     "kwalifikacja_stan": {
@@ -67,7 +95,7 @@
     "dwie_nogi": {
       "name": "Dwie nogi (presupozycja)",
       "say": "Pani/Panie [IMIĘ], jeszcze jedno. Żeby serwisant mógł W PEŁNI WYCENIĆ Państwa obecne urządzenie i przygotować NAJLEPSZĄ MOŻLIWĄ OFERTĘ WYMIANY -- potrzebujemy żeby oboje Państwo byli w domu.\n\nSerwisant omówi z Państwem różne warianty, więc ważne żeby oboje mogli Państwo zadecydować na spokojnie.\n\nPan/Pani ŻONA/MĄŻ też będzie, prawda?",
-      "tip": "ZASADA BELFORDA: zakładasz że TAK! Ton pewności, nie pytania. KORZYŚĆ = WARUNEK.",
+      "tip": "ZASADA BELFORTA: zakładasz że TAK! Ton pewności, nie pytania. KORZYŚĆ = WARUNEK.",
       "responses": [
         { "label": "Tak, oboje będziemy", "next": "book_termin" },
         { "label": "W pracy / nie będzie", "next": "rebuttal_praca" },
@@ -136,17 +164,9 @@
     "confirm": {
       "name": "Potwierdzenie + 3 warunki",
       "say": "Doskonale! Jeszcze trzy rzeczy:\n\nPO PIERWSZE -- proszę przygotować Państwa obecny Rainbow, żeby serwisant mógł go obejrzeć i wycenić.\nPO DRUGIE -- proszę nie zapraszać sąsiadów ani znajomych, bo serwisant będzie omawiał Państwa indywidualną ofertę i warunki finansowe.\nPO TRZECIE i najważniejsze -- proszę żeby Pan/Pani i ŻONA/MĄŻ na pewno był/a w domu. Tylko wtedy nasz pracownik przedstawi ofertę.\n\nUmówione? (Czekaj na: TAK)\n\nŚwietnie Pani/Panie [IMIĘ]! Widzimy się [DZIEŃ] o [GODZINA]. Miłego dnia!",
-      "tip": "WYŚLIJ SMS: Dzień dobry! Tu Marta z Rainbow. Potwierdzam wizytę serwisanta [DZIEŃ] o godz. [GODZINA] -- bezpłatny przegląd i wycena Państwa Rainbow. Prosimy o przygotowanie urządzenia i obecność obojga Państwa! Do zobaczenia!",
+      "tip": "WYŚLIJ SMS z potwierdzeniem po zakończeniu rozmowy.",
       "responses": [
         { "label": "UMÓWIONO - Zapisz", "next": null }
-      ]
-    },
-    "objection_cena": {
-      "name": "Obiekcja: cena",
-      "say": "Przegląd i wycena są całkowicie bezpłatne. Jeśli chodzi o wymianę -- to zależy od stanu Państwa obecnego urządzenia. Dlatego serwisant musi je obejrzeć i wycenić.\n\nWartość starego Rainbow zalicza się na poczet nowego -- szczegóły poda serwisant na miejscu. Warto zobaczyć, bo to nic nie kosztuje!",
-      "responses": [
-        { "label": "OK, umów przegląd", "next": "kwalifikacja_model" },
-        { "label": "Nie stać mnie", "next": "end_not_interested" }
       ]
     },
     "objection_czas": {

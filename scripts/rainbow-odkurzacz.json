@@ -200,14 +200,19 @@
     },
     "objection_price": {
       "name": "Obiekcja cenowa",
-      "say": "Rozumiem obawy o cenę. Ale prawda jest taka, że Rainbow to inwestycja na 20-30 lat.\n\nOfferujemy też raty 0% i programy leasingowe. Prezentacja jest za darmo - warto zobaczyć co dostaje się za tę cenę.\n\nCzy mogę umówić prezentację?",
+      "say": "Pani/Panie [IMIĘ], nasz dział zajmuje się umawianiem spotkań i nie mamy dostępu do cenników Rainbow. Tymi rzeczami zajmuje się dział handlowy — ponieważ Rainbow od 90 lat sprzedawany jest wyłącznie w czasie domowych prezentacji. Więc powracając do naszego spotkania...",
+      "tip": "ABSOLUTNY ZAKAZ podawania jakiejkolwiek kwoty. Jedna odpowiedź, zero wariantów, zero tłumaczenia się. Od razu wracaj do umawiania terminu.",
       "responses": [
         {
-          "label": "OK, umów prezentację",
+          "label": "Klient wraca do tematu spotkania",
           "next": "book_this_week"
         },
         {
-          "label": "To i tak za drogo",
+          "label": "Dalej naciska na cenę",
+          "next": "objection_price"
+        },
+        {
+          "label": "Nie interesuje mnie",
           "next": "end_not_interested"
         }
       ]

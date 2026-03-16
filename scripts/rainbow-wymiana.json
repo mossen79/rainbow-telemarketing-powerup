@@ -8,9 +8,18 @@
       "say": "Halo, dzień dobry! Czy rozmawiam z Panią/Panem [IMIĘ]?",
       "tip": "Uśmiech! Energia! Pierwsze 4 sekundy decydują. Czekaj na 'tak'.",
       "responses": [
-        { "label": "Tak", "next": "intro" },
-        { "label": "Nie ma teraz", "next": "callback" },
-        { "label": "Zły numer", "next": "end_wrong_number" }
+        {
+          "label": "Tak",
+          "next": "intro"
+        },
+        {
+          "label": "Nie ma teraz",
+          "next": "callback"
+        },
+        {
+          "label": "Zły numer",
+          "next": "end_wrong_number"
+        }
       ]
     },
     "intro": {
@@ -18,10 +27,22 @@
       "say": "Marta z tej strony... (pauza 2 sekundy)\n\nZostawili Państwo kontakt na naszej stronie w sprawie wymiany starego modelu Rainbow na Nowy -- zgadza się, prawda?",
       "tip": "Pauza 2 sekundy po swoim imieniu buduje autorytet i łapie uważność!",
       "responses": [
-        { "label": "Tak / Zgadza się", "next": "pitch" },
-        { "label": "Nie pamiętam", "next": "pitch" },
-        { "label": "Nie mam czasu", "next": "objection_czas" },
-        { "label": "Nie mam Rainbow", "next": "end_no_rainbow" }
+        {
+          "label": "Tak / Zgadza się",
+          "next": "pitch"
+        },
+        {
+          "label": "Nie pamiętam",
+          "next": "pitch"
+        },
+        {
+          "label": "Nie mam czasu",
+          "next": "objection_czas"
+        },
+        {
+          "label": "Nie mam Rainbow",
+          "next": "end_no_rainbow"
+        }
       ]
     },
     "pitch": {
@@ -29,37 +50,41 @@
       "say": "(Jeśli TAK: Świetnie! / Jeśli NIE: Nic nie szkodzi, w skrócie...)\n\nDzwonię bo mamy teraz specjalny program dla naszych klientów. Dotyczy BEZPŁATNEGO PRZEGLĄDU Państwa obecnego Rainbow i możliwości WYMIANY starego modelu na najnowszy, z zaliczeniem wartości obecnego urządzenia.\n\nPrzegląd jest całkowicie bezpłatny i oczywiście do niczego nie zobowiązuje. Nasz serwisant przyjedzie, sprawdzi stan Państwa urządzenia, wyceni je i przedstawi ofertę wymiany.\n\nŻeby serwisant mógł się odpowiednio przygotować, mam kilka szybkich pytań. Możemy kontynuować?",
       "tip": "Mów z entuzjazmem. To Ty masz dla nich świetną wiadomość, nie odwrotnie.",
       "responses": [
-        { "label": "Tak / Może", "next": "kwalifikacja_model" },
-        { "label": "🔴 PANIC: Ile to kosztuje?", "next": "panic_cena_poziom_1" },
-        { "label": "Muszę pomyśleć", "next": "objection_pomyslec" },
-        { "label": "Nie, dziękuję", "next": "end_not_interested" }
+        {
+          "label": "Tak / Może",
+          "next": "kwalifikacja_model"
+        },
+        {
+          "label": "🔴 PANIC: Ile to kosztuje?",
+          "next": "panic_cena_poziom_1"
+        },
+        {
+          "label": "Muszę pomyśleć",
+          "next": "objection_pomyslec"
+        },
+        {
+          "label": "Nie, dziękuję",
+          "next": "end_not_interested"
+        }
       ]
     },
     "panic_cena_poziom_1": {
-      "name": "PANIC 1: Pyta z ciekawości",
-      "say": "Wybierz jeden z wariantów w zależności od flow rozmowy:\n\n[OPCJA 1 - BELFORT: Defleksja]\n\"Rozumiem, to bardzo fair pytanie. Ale niech mi Pani powie — czy idea systemu, który wykorzystuje wodę, żeby usunąć roztocza i brud ma dla Pani sens? Podoba się Pani ten pomysł? (TAK) Super, więc inwestycja zależy od tego, na ile wycenimy stary sprzęt na miejscu.\"\n\n[OPCJA 2 - DAN LOK: Odwrócenie]\n\"Zanim odpowiem — niech mi Pani powie jedno. Gdyby dopłata była odpowiednia, czy nowy Rainbow to jest sprzęt, który chciałaby Pani mieć w domu? (TAK) Właśnie. Więc to ustalimy podczas pokazu.\"\n\n[OPCJA 3 - BÓL / OSZCZĘDNOŚĆ]\n\"Za chwilę do tego dojdziemy. Ale powiedziałaby mi Pani, ile rocznie wydajecie na leki na alergię albo chemię do sprzątania? (ODPOWIEDŹ) Właśnie. Bo nowy Rainbow docelowo oszczędza pieniądze i zdrowie, a oddanie starego obniża koszt.\"",
-      "tip": "Po przeczytaniu wybranej opcji ZAWSZE płynnie zmień temat pytając o sprzęt. Przejmij kontrolę!",
+      "name": "Obiekcja cenowa",
+      "say": "Pani/Panie [IMIE], nasz dzial zajmuje sie umawianiem spotkan i nie mamy dostepu do cennikow Rainbow. Tymi rzeczami zajmuje sie dzial handlowy — poniewaz Rainbow od 90 lat sprzedawany jest wylacznie w czasie domowych prezentacji. Wiec powracajac do naszego spotkania...",
+      "tip": "ABSOLUTNY ZAKAZ podawania jakiejkolwiek kwoty. Jedna odpowiedz, zero wariantow, zero tlumaczenia sie. Od razu wracaj do umawiania terminu.",
       "responses": [
-        { "label": "Odpuścił -> Wróć do skryptu", "next": "kwalifikacja_model" },
-        { "label": "🔴 DALEJ NACISKA (Chce kwoty)", "next": "panic_cena_poziom_2" }
-      ]
-    },
-    "panic_cena_poziom_2": {
-      "name": "PANIC 2: Dalej naciska (Eskalacja)",
-      "say": "\"Rozumiem, że chce Pani wiedzieć chociaż orientacyjnie. Mogę powiedzieć tyle — nowy Rainbow to sprzęt medyczny, inwestycja na lata. Ale dopóki serwisant nie zobaczy Pani starego urządzenia i nie wyceni, ile tysięcy możemy za niego odliczyć, każda liczba będzie bez kontekstu. Naprawdę warto zobaczyć to na żywo, bo wycena nic nie kosztuje.\"",
-      "tip": "Pełen spokój. Pokazujesz, że nie rzucasz liczbami w ciemno, bo dbasz o jej portfel (odliczenie za stary sprzęt).",
-      "responses": [
-        { "label": "Odpuścił -> Wróć do skryptu", "next": "kwalifikacja_stan" },
-        { "label": "🔴 DALEJ NACISKA (Chce wiedzieć TERAZ)", "next": "panic_cena_poziom_3" }
-      ]
-    },
-    "panic_cena_poziom_3": {
-      "name": "PANIC 3: Agresywnie żąda ceny (Broń Ostateczna)",
-      "say": "Wykorzystaj jedną z dwóch najsilniejszych ram:\n\n[OPCJA 1 - SKRYPT OSZUŚCI]\n\"Świetnie, że Pani pyta! Bo kryje się za tym pułapka. Firma Rainbow NIGDY nie podaje ceny wymiany przez telefon. Gdyby usłyszała Pani kwotę przez słuchawkę, ma Pani pewność, że rozmawia z OSZUSTAMI. Serwisant musi na żywo ocenić stan starego sprzętu ze względów bezpieczeństwa i procedur.\"\n\n[OPCJA 2 - TRÓJSTOPNIOWA ESKALACJA]\n\"Szanuję to, że chce Pani wiedzieć. Powiem tak — nowy system to inwestycja rzędu kilkunastu tysięcy złotych, OD CZEGO ODLICZAMY stary sprzęt. Wiem, że to brzmi jak dużo. Ale 95% naszych klientów po zobaczeniu różnicy na żywo mówi 'teraz rozumiem dlaczego'. Dajmy sobie 40 minut — jak się nie opłaci, podziękujemy sobie. Fair?\"",
-      "tip": "To jest granica. Jeśli to nie zadziała, to znaczy, że klient nie ma budżetu i nie ma sensu marnować czasu serwisanta.",
-      "responses": [
-        { "label": "Zrozumiał -> Wróć do skryptu", "next": "kwalifikacja_malzonek" },
-        { "label": "Nie stać mnie / Rozłącza się", "next": "end_not_interested" }
+        {
+          "label": "Klient wraca do tematu spotkania",
+          "next": "kwalifikacja_model"
+        },
+        {
+          "label": "Dalej naciska na cene",
+          "next": "panic_cena_poziom_1"
+        },
+        {
+          "label": "Nie interesuje mnie",
+          "next": "end_not_interested"
+        }
       ]
     },
     "kwalifikacja_model": {
@@ -67,9 +92,18 @@
       "say": "Jaki model Rainbow Państwo mają -- pamiętają Państwo mniej więcej z jakiego roku?",
       "tip": "ZAPISZ model i rok!",
       "responses": [
-        { "label": "Podał model/rok", "next": "kwalifikacja_stan" },
-        { "label": "Nie pamięta", "next": "kwalifikacja_stan" },
-        { "label": "🔴 PANIC: Ile to kosztuje?", "next": "panic_cena_poziom_1" }
+        {
+          "label": "Podał model/rok",
+          "next": "kwalifikacja_stan"
+        },
+        {
+          "label": "Nie pamięta",
+          "next": "kwalifikacja_stan"
+        },
+        {
+          "label": "🔴 PANIC: Ile to kosztuje?",
+          "next": "panic_cena_poziom_1"
+        }
       ]
     },
     "kwalifikacja_stan": {
@@ -77,8 +111,14 @@
       "say": "A urządzenie działa normalnie, czy są jakieś problemy z nim?",
       "tip": "ZAPISZ odpowiedź!",
       "responses": [
-        { "label": "Działa OK", "next": "kwalifikacja_malzonek" },
-        { "label": "Ma problemy", "next": "kwalifikacja_malzonek" }
+        {
+          "label": "Działa OK",
+          "next": "kwalifikacja_malzonek"
+        },
+        {
+          "label": "Ma problemy",
+          "next": "kwalifikacja_malzonek"
+        }
       ]
     },
     "kwalifikacja_malzonek": {
@@ -86,10 +126,22 @@
       "say": "Kto częściej korzysta z Rainbow, Pan/Pani czy ŻONA/MĄŻ? ... Rozumiem.",
       "tip": "Nienachalne badanie, czy w domu jest drugi decydent.",
       "responses": [
-        { "label": "Głównie ja", "next": "dwie_nogi" },
-        { "label": "Głównie mąż/żona", "next": "dwie_nogi" },
-        { "label": "Oboje używamy", "next": "dwie_nogi" },
-        { "label": "Osoba samotna", "next": "book_termin" }
+        {
+          "label": "Głównie ja",
+          "next": "dwie_nogi"
+        },
+        {
+          "label": "Głównie mąż/żona",
+          "next": "dwie_nogi"
+        },
+        {
+          "label": "Oboje używamy",
+          "next": "dwie_nogi"
+        },
+        {
+          "label": "Osoba samotna",
+          "next": "book_termin"
+        }
       ]
     },
     "dwie_nogi": {
@@ -97,52 +149,100 @@
       "say": "Pani/Panie [IMIĘ], jeszcze jedno. Żeby serwisant mógł W PEŁNI WYCENIĆ Państwa obecne urządzenie i przygotować NAJLEPSZĄ MOŻLIWĄ OFERTĘ WYMIANY -- potrzebujemy żeby oboje Państwo byli w domu.\n\nSerwisant omówi z Państwem różne warianty, więc ważne żeby oboje mogli Państwo zadecydować na spokojnie.\n\nPan/Pani ŻONA/MĄŻ też będzie, prawda?",
       "tip": "ZASADA BELFORTA: zakładasz że TAK! Ton pewności, nie pytania. KORZYŚĆ = WARUNEK.",
       "responses": [
-        { "label": "Tak, oboje będziemy", "next": "book_termin" },
-        { "label": "W pracy / nie będzie", "next": "rebuttal_praca" },
-        { "label": "Sam/sama decyduję", "next": "rebuttal_sam_decyduje" },
-        { "label": "Nie obchodzi go/jej", "next": "rebuttal_nie_obchodzi" },
-        { "label": "Pracuje na zmiany", "next": "rebuttal_zmiany" },
-        { "label": "Niech przyjdzie sam", "next": "rebuttal_niech_przyjdzie" }
+        {
+          "label": "Tak, oboje będziemy",
+          "next": "book_termin"
+        },
+        {
+          "label": "W pracy / nie będzie",
+          "next": "rebuttal_praca"
+        },
+        {
+          "label": "Sam/sama decyduję",
+          "next": "rebuttal_sam_decyduje"
+        },
+        {
+          "label": "Nie obchodzi go/jej",
+          "next": "rebuttal_nie_obchodzi"
+        },
+        {
+          "label": "Pracuje na zmiany",
+          "next": "rebuttal_zmiany"
+        },
+        {
+          "label": "Niech przyjdzie sam",
+          "next": "rebuttal_niech_przyjdzie"
+        }
       ]
     },
     "rebuttal_praca": {
       "name": "Zbicie obiekcji: w pracy",
       "say": "Jasne, całkowicie rozumiem! Właśnie dlatego pytam wcześniej -- żeby znaleźć termin, który pasuje obojgu. Nasi serwisanci pracują też wieczorami i w weekendy. Kiedy oboje Państwo macie spokojniejszy wieczór -- może sobota albo niedziela?",
       "responses": [
-        { "label": "OK, znajdziemy termin", "next": "book_termin" },
-        { "label": "Nadal opór", "next": "rebuttal_ostateczny" }
+        {
+          "label": "OK, znajdziemy termin",
+          "next": "book_termin"
+        },
+        {
+          "label": "Nadal opór",
+          "next": "rebuttal_ostateczny"
+        }
       ]
     },
     "rebuttal_sam_decyduje": {
       "name": "Zbicie obiekcji: sam decyduje",
       "say": "Wierzę Pani/Panu! Ale proszę zobaczyć -- serwisant będzie omawiał wycenę Państwa obecnego Rainbow, koszt wykonania prac serwisowych, lub warunki ewentualnej wymiany. To decyzja finansowa która dotyczy obojga Państwa.\n\nGdyby potem musiała Pani to wszystko tłumaczyć mężowi... a on nie widział wyceny, nie słyszał wariantów -- to potem wychodzi niepotrzebne 'ale dlaczego nie poczekałaś'.\n\nLepsza jest ta godzina razem niż potem tydzień dyskusji w domu, prawda? Znajdźmy termin, kiedy oboje Państwo mają chwilę.",
       "responses": [
-        { "label": "OK, wspólny termin", "next": "book_termin" },
-        { "label": "Nadal sam/sama", "next": "rebuttal_ostateczny" }
+        {
+          "label": "OK, wspólny termin",
+          "next": "book_termin"
+        },
+        {
+          "label": "Nadal sam/sama",
+          "next": "rebuttal_ostateczny"
+        }
       ]
     },
     "rebuttal_nie_obchodzi": {
       "name": "Zbicie obiekcji: nie obchodzi go",
       "say": "Wie Pani co jest ciekawe? Większość mężów mówi tak samo przed wizytą. A potem jak widzą, ile jest wart ich stary Rainbow na wymianę i co potrafi nowy model -- to nagle są bardzo zainteresowani!\n\nNie musi być zainteresowany teraz -- wystarczy że będzie w domu. Godzinka i oboje Państwo będziecie wiedzieli na czym stoicie. Możemy się umówić na sobotę albo niedzielę?",
       "responses": [
-        { "label": "OK, spróbuję namówić", "next": "book_termin" },
-        { "label": "Na pewno nie przyjdzie", "next": "rebuttal_ostateczny" }
+        {
+          "label": "OK, spróbuję namówić",
+          "next": "book_termin"
+        },
+        {
+          "label": "Na pewno nie przyjdzie",
+          "next": "rebuttal_ostateczny"
+        }
       ]
     },
     "rebuttal_zmiany": {
       "name": "Zbicie obiekcji: praca zmianowa",
       "say": "Rozumiem, to bywa trudne. A kiedy w najbliższych dwóch tygodniach macie taki wieczór, kiedy oboje Państwo jesteście w domu? Może jakiś wolny dzień? Dostosujemy się całkowicie pod Państwa grafik.",
       "responses": [
-        { "label": "Za tydzień-dwa", "next": "book_termin" },
-        { "label": "Ciężko ustalić", "next": "rebuttal_ostateczny" }
+        {
+          "label": "Za tydzień-dwa",
+          "next": "book_termin"
+        },
+        {
+          "label": "Ciężko ustalić",
+          "next": "rebuttal_ostateczny"
+        }
       ]
     },
     "rebuttal_niech_przyjdzie": {
       "name": "Zbicie obiekcji: niech przyjdzie sam",
       "say": "Pani/Panie [IMIĘ], naprawdę chcę, żeby ta wizyta miała dla Państwa sens. Serwisant będzie wyceniał Państwa stary Rainbow, pokazywał różnicę z nowym modelem, omawiał warianty finansowe.\n\nJeśli mąż tego nie zobaczy na własne oczy -- to potem nie może podjąć decyzji, bo nie ma pełnego obrazu. I spotykamy się jeszcze raz, a to strata czasu i dla Państwa, i dla nas.\n\nJedna wspólna godzina -- i oboje Państwo macie pełną wiedzę. Kiedy oboje będziecie w domu?",
       "responses": [
-        { "label": "OK, razem", "next": "book_termin" },
-        { "label": "Nadal upiera się", "next": "rebuttal_ostateczny" }
+        {
+          "label": "OK, razem",
+          "next": "book_termin"
+        },
+        {
+          "label": "Nadal upiera się",
+          "next": "rebuttal_ostateczny"
+        }
       ]
     },
     "rebuttal_ostateczny": {
@@ -150,15 +250,24 @@
       "say": "Rozumiem. Zróbmy tak -- niech Pani/Pan porozmawia z mężem/żoną kiedy ma wolny wieczór, a ja zadzwonię do Pani jutro o tej samej porze i ustalimy termin. Pasuje?",
       "tip": "ODDZWONIENIE -- NIGDY NIE UMAWIAJ NA JEDNĄ NOGĘ!",
       "responses": [
-        { "label": "OK, zadzwoń jutro", "next": "callback_scheduled" },
-        { "label": "Nie, rezygnuję", "next": "end_not_interested" }
+        {
+          "label": "OK, zadzwoń jutro",
+          "next": "callback_scheduled"
+        },
+        {
+          "label": "Nie, rezygnuję",
+          "next": "end_not_interested"
+        }
       ]
     },
     "book_termin": {
       "name": "Zamknięcie terminu",
       "say": "Świetnie! To umawiamy Państwa na [DZIEŃ, DATA] o godzinie [GODZINA].\n\nAdres to [ADRES] -- zgadza się?",
       "responses": [
-        { "label": "Tak, zgadza się", "next": "confirm" }
+        {
+          "label": "Tak, zgadza się",
+          "next": "confirm"
+        }
       ]
     },
     "confirm": {
@@ -166,32 +275,56 @@
       "say": "Doskonale! Jeszcze trzy rzeczy:\n\nPO PIERWSZE -- proszę przygotować Państwa obecny Rainbow, żeby serwisant mógł go obejrzeć i wycenić.\nPO DRUGIE -- proszę nie zapraszać sąsiadów ani znajomych, bo serwisant będzie omawiał Państwa indywidualną ofertę i warunki finansowe.\nPO TRZECIE i najważniejsze -- proszę żeby Pan/Pani i ŻONA/MĄŻ na pewno był/a w domu. Tylko wtedy nasz pracownik przedstawi ofertę.\n\nUmówione? (Czekaj na: TAK)\n\nŚwietnie Pani/Panie [IMIĘ]! Widzimy się [DZIEŃ] o [GODZINA]. Miłego dnia!",
       "tip": "WYŚLIJ SMS z potwierdzeniem po zakończeniu rozmowy.",
       "responses": [
-        { "label": "UMÓWIONO - Zapisz", "next": null }
+        {
+          "label": "UMÓWIONO - Zapisz",
+          "next": null
+        }
       ]
     },
     "objection_czas": {
       "name": "Obiekcja: nie mam czasu",
       "say": "Rozumiem, że Państwo są zajęci. Wizyta trwa około godziny. Może weekend albo wieczór -- kiedy Państwo mają spokojniej?",
       "responses": [
-        { "label": "Weekend / wieczór", "next": "book_termin" },
-        { "label": "Naprawdę nie mam czasu", "next": "callback" }
+        {
+          "label": "Weekend / wieczór",
+          "next": "book_termin"
+        },
+        {
+          "label": "Naprawdę nie mam czasu",
+          "next": "callback"
+        }
       ]
     },
     "objection_dziala": {
       "name": "Obiekcja: jeszcze działa",
       "say": "To świetnie! Im w lepszym stanie Państwa urządzenie, tym wyższa jego wartość przy wymianie. Warto wycenić teraz, bo programy wymian nie trwają wiecznie.\n\nA przegląd i tak jest bezpłatny -- więc Państwa nic to nie kosztuje.",
       "responses": [
-        { "label": "OK, niech wyceni", "next": "kwalifikacja_model" },
-        { "label": "Nie potrzebuję", "next": "end_not_interested" }
+        {
+          "label": "OK, niech wyceni",
+          "next": "kwalifikacja_model"
+        },
+        {
+          "label": "Nie potrzebuję",
+          "next": "end_not_interested"
+        }
       ]
     },
     "objection_pomyslec": {
       "name": "Obiekcja: muszę pomyśleć",
       "say": "Oczywiście! Przegląd jest bezpłatny, więc nie ma żadnego ryzyka. Umówmy termin -- a gdyby coś się zmieniło, zawsze można przenieść. Lepsza rezerwacja teraz, bo terminy serwisantów szybko się zapełniają.",
       "responses": [
-        { "label": "OK, umów", "next": "kwalifikacja_model" },
-        { "label": "Za kilka dni", "next": "callback" },
-        { "label": "Nie, dziękuję", "next": "end_not_interested" }
+        {
+          "label": "OK, umów",
+          "next": "kwalifikacja_model"
+        },
+        {
+          "label": "Za kilka dni",
+          "next": "callback"
+        },
+        {
+          "label": "Nie, dziękuję",
+          "next": "end_not_interested"
+        }
       ]
     },
     "callback": {
@@ -199,44 +332,68 @@
       "say": "Jasne! Oddzwonię do Pani/Pana jutro -- przed południem czy po południu bardziej pasuje?",
       "tip": "PRESUPOZYCJA: nie pytasz CZY, tylko KIEDY jutro! Wybór między dwoma opcjami = oba rozwiązania są dla Ciebie OK.",
       "responses": [
-        { "label": "Przed południem", "next": "callback_scheduled" },
-        { "label": "Po południu", "next": "callback_scheduled" },
-        { "label": "Ja zadzwonię", "next": "end_callback_client" }
+        {
+          "label": "Przed południem",
+          "next": "callback_scheduled"
+        },
+        {
+          "label": "Po południu",
+          "next": "callback_scheduled"
+        },
+        {
+          "label": "Ja zadzwonię",
+          "next": "end_callback_client"
+        }
       ]
     },
     "callback_scheduled": {
       "name": "Zaplanowano oddzwonienie",
       "say": "Super! Zapisuję i oddzwonię w ustalonym terminie. Dziękuję, do usłyszenia!",
       "responses": [
-        { "label": "ODDZWONIĆ - Zapisz", "next": null }
+        {
+          "label": "ODDZWONIĆ - Zapisz",
+          "next": null
+        }
       ]
     },
     "end_wrong_number": {
       "name": "Zły numer",
       "say": "Przepraszam za pomyłkę. Miłego dnia!",
       "responses": [
-        { "label": "ZŁY NUMER - Zapisz", "next": null }
+        {
+          "label": "ZŁY NUMER - Zapisz",
+          "next": null
+        }
       ]
     },
     "end_not_interested": {
       "name": "Nie zainteresowany",
       "say": "Rozumiem. Dziękuję za rozmowę. Miłego dnia!",
       "responses": [
-        { "label": "NIE ZAINTERESOWANY", "next": null }
+        {
+          "label": "NIE ZAINTERESOWANY",
+          "next": null
+        }
       ]
     },
     "end_no_rainbow": {
       "name": "Nie ma Rainbow",
       "say": "Rozumiem, program jest dla obecnych właścicieli Rainbow. Mogę w takim razie umówić bezpłatny pokaz nowego sprzętu. Miłego dnia!",
       "responses": [
-        { "label": "NIE MA RAINBOW", "next": null }
+        {
+          "label": "NIE MA RAINBOW",
+          "next": null
+        }
       ]
     },
     "end_callback_client": {
       "name": "Klient oddzwoni",
       "say": "Oczywiście! Nasz numer wyświetli się w telefonie. Czekam na kontakt. Miłego dnia!",
       "responses": [
-        { "label": "KLIENT ODDZWONI", "next": null }
+        {
+          "label": "KLIENT ODDZWONI",
+          "next": null
+        }
       ]
     }
   }

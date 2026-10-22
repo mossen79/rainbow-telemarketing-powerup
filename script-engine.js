@@ -244,5 +244,5 @@ document.addEventListener('DOMContentLoaded', () => {
     scriptUI = new ScriptUI(scriptEngine);
 
     // Załaduj domyślny skrypt
-    scriptUI.loadScript('rainbow-odkurzacz');
+    scriptUI.loadScript('rainbow-wymiana');
 });

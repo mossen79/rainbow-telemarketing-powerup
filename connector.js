@@ -24,20 +24,6 @@ TrelloPowerUp.initialize({
                         });
                     });
                 }
-            },
-            {
-                icon: 'https://mossen79.github.io/rainbow-telemarketing-powerup/icon-powerup.svg',
-                text: 'Odkurzacz (nowi)',
-                callback: function (t) {
-                    return t.card('name').then(function(card) {
-                        var name = encodeURIComponent(card.name || '');
-                        return t.modal({
-                            url: './script-popup.html?campaign=odkurzacz&card=' + name,
-                            fullscreen: true,
-                            title: 'Odkurzacz Rainbow'
-                        });
-                    });
-                }
             }
         ];
     },
@@ -55,22 +41,6 @@ TrelloPowerUp.initialize({
                             url: './script-popup.html?campaign=wymiana&card=' + name,
                             fullscreen: true,
                             title: 'WYMIANA Rainbow'
-                        });
-                    });
-                }
-            },
-            {
-                title: 'Odkurzacz',
-                text: 'Skrypt Odkurzacz',
-                icon: 'https://mossen79.github.io/rainbow-telemarketing-powerup/icon-powerup.svg',
-                color: 'green',
-                callback: function(t) {
-                    return t.card('name').then(function(card) {
-                        var name = encodeURIComponent(card.name || '');
-                        return t.modal({
-                            url: './script-popup.html?campaign=odkurzacz&card=' + name,
-                            fullscreen: true,
-                            title: 'Odkurzacz Rainbow'
                         });
                     });
                 }
